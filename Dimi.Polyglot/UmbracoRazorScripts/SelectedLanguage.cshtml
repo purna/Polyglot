@@ -1,0 +1,17 @@
+﻿@{
+    string selectedLanguage = "";
+    string lang = Request.Params["lang"];
+    
+    System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]$");
+
+    if (!string.IsNullOrEmpty(lang) && regex.IsMatch(lang))
+    {
+        selectedLanguage = lang;
+    }
+    else
+    {
+        selectedLanguage = Dimi.Polyglot.BLL.Languages.GetDefaultLanguage();
+    }
+@selectedLanguage
+}
+

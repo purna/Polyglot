@@ -1,0 +1,52 @@
+﻿@inherits umbraco.MacroEngines.DynamicNodeContext
+@using umbraco.MacroEngines;
+@{
+    
+    string selectedLanguage = RenderPage("SelectedLanguage.cshtml").ToString().Trim();
+
+    DynamicNode page = Model;
+
+    string value = string.Empty;
+
+    var prop = page.GetProperty(Parameter.Property + "_" + selectedLanguage);
+    if (prop != null) { value = prop.ToString(); }
+
+    if (string.IsNullOrEmpty(value))
+    {
+
+        foreach (DynamicNode child in page.GetChildrenAsList)
+        {
+
+            if (child.NodeTypeAlias == page.NodeTypeAlias + "_TranslationFolder")
+            {
+
+                foreach (DynamicNode translation in child.GetChildrenAsList)
+                {
+                    prop = translation.GetProperty("language");
+
+                    if (prop != null && prop.ToString().ToLower() == selectedLanguage)
+                    {
+                        prop = translation.GetProperty(Parameter.Property);
+                    }
+                    else
+                    {
+                        prop = null;
+                    }
+
+                    if (prop != null)
+                    {
+                        value = prop.ToString();
+                    }
+                }
+            }
+        }
+    }
+
+    if (string.IsNullOrEmpty(value))
+    {
+        prop = page.GetProperty(Parameter.Property);
+        if (prop != null) { value = prop.ToString(); }
+    }
+  
+ @Html.Raw(value)
+ }
