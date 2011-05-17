@@ -32,9 +32,7 @@ namespace Dimi.Polyglot.Web.Frontoffice
 
             if (!string.IsNullOrEmpty(_selectedLanguage) && regex.IsMatch(_selectedLanguage) && Languages.ExistsLanguage(_selectedLanguage.ToLower()))
             {
-                string culture = Languages.GetLanguageCulture(_selectedLanguage.ToLower());
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
-                System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(culture);
+                _selectedCulture = Languages.GetLanguageCulture(_selectedLanguage.ToLower());
             }
             else
             {
@@ -42,7 +40,9 @@ namespace Dimi.Polyglot.Web.Frontoffice
                 _selectedCulture = Languages.GetDefaultCulture();
             }
 
-           
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(_selectedCulture);
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(_selectedCulture);
+
         }
 
         private void LoadLanguages()
