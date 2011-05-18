@@ -9,7 +9,7 @@
                 <asp:CheckBox ID="CheckBoxMultiLanguageSelect" runat="server" /> <b>All</b>
                 <asp:CheckBoxList ID="CheckBoxList1" runat="server"></asp:CheckBoxList>
             </umb:PropertyPanel>
-            <umb:PropertyPanel ID="PropertyPanel2" runat="server" Text="There are no translation folder document types (x_TranslationFolder) or translation document types (x_Translation) for your currently selected document." Visible="false">
+            <umb:PropertyPanel ID="PropertyPanel2" runat="server" Text="Translation of this document type is not available." Visible="false">
             </umb:PropertyPanel>
         </umb:Pane>
     </umb:UmbracoPanel>

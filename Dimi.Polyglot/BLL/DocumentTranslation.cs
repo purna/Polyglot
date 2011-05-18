@@ -25,7 +25,7 @@ namespace Dimi.Polyglot.BLL
         /// followed by the suffix contained in the TranslationFolderAliasSuffix constant
         /// (see above), if it exists
         /// </summary>
-        /// <param name="NodeID">The id of thenode</param>
+        /// <param name="NodeID">The id of the node</param>
         /// <returns>The document type of the translation folder, if it exists; otherwise null</returns>
         public static DocumentType GetTranslationFolderContentType(int NodeID)
         {
@@ -37,7 +37,7 @@ namespace Dimi.Polyglot.BLL
             foreach (int contentTypeId in nodeDocContentType.AllowedChildContentTypeIDs)
             {
                 DocumentType contentType = new DocumentType(contentTypeId);
-                if (contentType.Alias.EndsWith(TranslationFolderAliasSuffix))
+                if (contentType.Alias == nodeDocContentType.Alias + TranslationFolderAliasSuffix)
                 {
                     folderContentType = contentType;
                 }
@@ -198,6 +198,53 @@ namespace Dimi.Polyglot.BLL
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if the appropriate document types exist and if they are properly structured so that 
+        /// translations for a given node can be created.
+        /// </summary>
+        /// <param name="NodeID">The id of the node for which the translations are going to be created</param>
+        /// <returns>"ok" if everything is in order; otherwise a description of the problem which has been discovered </returns>
+        public static string CheckTranslationInfrastructure(int NodeID)
+        {
+            string status = "ok";
+            Document nodeDoc = new Document(NodeID);
+
+            try
+            {
+                DocumentType translationFolderContentType = GetTranslationFolderContentType(NodeID);
+                if (translationFolderContentType != null)
+                {
+                    if (translationFolderContentType.AllowedChildContentTypeIDs.Count() == 0)
+                        throw new Exception("Translation document type does not exist, or it is not an allowed child nodetype of the translation folder document type.");
+
+                    if (translationFolderContentType.AllowedChildContentTypeIDs.Count() > 1)
+                        throw new Exception("Translation folder document type has more than one allowed child nodetypes. It should only have one.");
+
+                    DocumentType translationContentType = new DocumentType(translationFolderContentType.AllowedChildContentTypeIDs[0]);
+           
+                    if ((from prop in translationContentType.PropertyTypes
+                         where prop.Alias == LanguagePropertyAlias 
+                         select prop).Count() == 0)
+                        throw new Exception("Translation document type does not contain the '" + LanguagePropertyAlias + "' (alias) property");
+
+                    if ((from p in BLL.ContentType.GetPropertyList(translationContentType.Id)
+                         where !(from pr in BLL.ContentType.GetPropertyList(nodeDoc.ContentType.Id) select pr.Alias).Contains(p.Alias)
+                            && p.Alias != GetHideFromNavigationPropertyAlias() && p.Alias != LanguagePropertyAlias
+                         select p).Count() > 0)
+                        throw new Exception("Translation document type contains properties that do not exist in the document type (apart from language and navigation hiding)");
+                                            
+                }
+                else throw new Exception("TranslationFolder document type " + new Document(NodeID).ContentType.Alias + TranslationFolderAliasSuffix + " does not exist, or it does not have the right alias or is not an allowed child nodetype");
+                
+            }
+            catch (Exception ex)
+            {
+                status = ex.Message;
+            }
+
+            return status;
         }
 
     }

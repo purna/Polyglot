@@ -24,7 +24,10 @@ namespace Dimi.Polyglot.Web.Backoffice
             umbraco.cms.businesslogic.web.Document currentDocument = new umbraco.cms.businesslogic.web.Document(NodeID);
             DocumentDescription.Text = currentDocument.Text;
 
-            if (BLL.DocumentTranslation.GetTranslationFolderContentType(NodeID) != null)
+            //if (BLL.DocumentTranslation.GetTranslationFolderContentType(NodeID) != null)
+
+            string status = BLL.DocumentTranslation.CheckTranslationInfrastructure(NodeID);
+            if (status == "ok")
             {
                 if (!IsPostBack)
                 {
@@ -75,6 +78,7 @@ namespace Dimi.Polyglot.Web.Backoffice
             {
                 PropertyPanel1.Visible = false;
                 PropertyPanel2.Visible = true;
+                ((umbraco.BasePages.BasePage)HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.warning, "Infrastructure issue", status);
             }
         }
 
