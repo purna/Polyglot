@@ -25,7 +25,7 @@ namespace Dimi.Polyglot.DAL
 
             ContentTypePropertyInfo s;
 
-            using (umbraco.DataLayer.IRecordsReader reader = h.ExecuteReader("SELECT * from [cmsPropertyType] WHERE contentTypeId = @contentTypeId", h.CreateParameter("contentTypeId", contentTypeId)))
+            using (umbraco.DataLayer.IRecordsReader reader = h.ExecuteReader("SELECT * from [dbo].[cmsPropertyType] WHERE contentTypeId = @contentTypeId", h.CreateParameter("contentTypeId", contentTypeId)))
             {
                 while (reader.Read())
                 {
