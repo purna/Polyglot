@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xsl:stylesheet [
+    <!ENTITY nbsp "&#x00A0;">
+]>
+<xsl:stylesheet
+  version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:msxml="urn:schemas-microsoft-com:xslt"
+  xmlns:umbraco.library="urn:umbraco.library" xmlns:Exslt.ExsltCommon="urn:Exslt.ExsltCommon" xmlns:Exslt.ExsltDatesAndTimes="urn:Exslt.ExsltDatesAndTimes" xmlns:Exslt.ExsltMath="urn:Exslt.ExsltMath" xmlns:Exslt.ExsltRegularExpressions="urn:Exslt.ExsltRegularExpressions" xmlns:Exslt.ExsltStrings="urn:Exslt.ExsltStrings" xmlns:Exslt.ExsltSets="urn:Exslt.ExsltSets"
+  exclude-result-prefixes="msxml umbraco.library Exslt.ExsltCommon Exslt.ExsltDatesAndTimes Exslt.ExsltMath Exslt.ExsltRegularExpressions Exslt.ExsltStrings Exslt.ExsltSets ">
+
+
+    <xsl:output method="xml" omit-xml-declaration="yes"/>
+
+    <xsl:param name="currentPage"/>
+    <xsl:include href="../xslt/LanguageParameter.xslt"/>
+    <xsl:template match="/">
+
+        <xsl:param name="UlCssId" select="macro/UlCssId"/>
+        <xsl:param name="Level" select="macro/Level"/>
+        <xsl:param name="NaviHideProperty" select="macro/NaviHideProperty"/>
+        <xsl:param name="CurrentItemCssClass" select="macro/CurrentItemCssClass"/>
+        <xsl:param name="TitlePropertyAlias" select="macro/TitlePropertyAlias"/>
+
+        <ul id="{$UlCssId}">
+        <xsl:for-each select="$currentPage/ancestor-or-self::*[@level=$Level and @isDoc]/child::*[@isDoc]" >
+          <xsl:variable name="hide" select="child::*[name()=$NaviHideProperty]" />
+          <xsl:if test="$hide!='1' or string-length($hide)=0">
+            <xsl:variable name="link">
+                <xsl:choose>
+                    <xsl:when test="string-length($langISO)=0">
+                        <xsl:value-of disable-output-escaping="yes" select="umbraco.library:NiceUrl(@id)" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of disable-output-escaping="yes" select="concat(umbraco.library:NiceUrl(@id), '?lang=', $langISO)" />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+
+            <xsl:variable name="currentPageTypeAlias" select="name()"/>
+
+            <xsl:variable name="title">
+
+                <xsl:choose>
+                    <xsl:when test="child::*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/*[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/* [name() = $TitlePropertyAlias and not(@isDoc)] != '' and
+string-length(child::*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/*[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/* [name() = $TitlePropertyAlias and not(@isDoc)]) != 0">
+                        <xsl:value-of disable-output-escaping="yes" select="child::*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/*[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/* [name() = $TitlePropertyAlias and not(@isDoc)]"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="string-length(child::*[name() = concat($TitlePropertyAlias, '_', $langISO) and not(@isDoc)]) = 0">
+                                <xsl:value-of disable-output-escaping="yes" select="child::* [name() = $TitlePropertyAlias and not(@isDoc)]"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of disable-output-escaping="yes" select="child::*[name() = concat($TitlePropertyAlias, '_', $langISO) and not(@isDoc)]"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            
+            <xsl:variable name="currentCss">  
+                <xsl:if test="contains(umbraco.library:NiceUrl($currentPage/@id),umbraco.library:NiceUrl(@id))">
+                  <xsl:value-of select="$CurrentItemCssClass"/>
+                </xsl:if>
+            </xsl:variable>
+
+            <li class="{$currentCss}"><a href="{$link}" title="{$title}">
+                <xsl:value-of disable-output-escaping="yes" select="$title"/>
+              </a></li>
+          </xsl:if>
+        </xsl:for-each>
+      </ul>
+    </xsl:template>
+
+</xsl:stylesheet>
+

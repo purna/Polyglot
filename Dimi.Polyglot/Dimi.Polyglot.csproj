@@ -71,6 +71,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UmbracoXsltScripts\LanguageParameter.xslt" />
+    <Content Include="UmbracoXsltScripts\PropertyTranslation.xslt" />
+    <Content Include="UmbracoXsltScripts\SelectedLanguage.xslt" />
+    <Content Include="UmbracoXsltScripts\TranslatedNavigation.xslt" />
+    <Content Include="UmbracoXsltScripts\TranslationRedirect.xslt" />
     <Content Include="Web\Backoffice\TranslationCreation.aspx" />
     <Content Include="Web\Frontoffice\LanguageSelector.ascx" />
   </ItemGroup>
