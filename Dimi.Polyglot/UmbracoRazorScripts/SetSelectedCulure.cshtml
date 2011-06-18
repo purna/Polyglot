@@ -1,0 +1,23 @@
+﻿@{
+            Zeta.EnterpriseLibrary.Web.QueryString _queryString = new Zeta.EnterpriseLibrary.Web.QueryString(HttpContext.Current.Handler as Page);
+
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]$");
+
+            string _selectedLanguage = _queryString["lang"];
+  
+            string _selectedCulture = string.Empty;
+
+            if (!string.IsNullOrEmpty(_selectedLanguage) && regex.IsMatch(_selectedLanguage) && Dimi.Polyglot.BLL.Languages.ExistsLanguage(_selectedLanguage.ToLower()))
+            {
+                _selectedCulture = Dimi.Polyglot.BLL.Languages.GetLanguageCulture(_selectedLanguage.ToLower());
+            }
+            else
+            {
+                _selectedLanguage = Dimi.Polyglot.BLL.Languages.GetDefaultLanguage();
+                _selectedCulture = Dimi.Polyglot.BLL.Languages.GetDefaultCulture();
+            }
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(_selectedCulture);
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(_selectedCulture);
+           
+        }
