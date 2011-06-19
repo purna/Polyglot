@@ -15,17 +15,19 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>Dimi.Polyglot_API_0_5</HtmlHelpName>
+    <HtmlHelpName>Dimi.Polyglot_API_1_1</HtmlHelpName>
     <Language>en-US</Language>
     <HelpTitle>Polyglot Package API</HelpTitle>
     <HelpFileFormat>Website</HelpFileFormat>
     <DocumentationSources>
       <DocumentationSource sourceFile="Dimi.Polyglot\bin\Dimi.Polyglot.dll" xmlns="" />
-<DocumentationSource sourceFile="Dimi.Polyglot\bin\Dimi.Polyglot.xml" xmlns="" /></DocumentationSources>
+      <DocumentationSource sourceFile="Dimi.Polyglot\bin\Dimi.Polyglot.xml" xmlns="" />
+    </DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Dimi.Polyglot.Web.Frontoffice" isDocumented="True" xmlns="" />
-<NamespaceSummaryItem name="Zeta.EnterpriseLibrary.Web" isDocumented="False" xmlns="" /></NamespaceSummaries>
+      <NamespaceSummaryItem name="Zeta.EnterpriseLibrary.Web" isDocumented="False" xmlns="" />
+    </NamespaceSummaries>
     <MissingTags>AutoDocumentCtors, AutoDocumentDispose</MissingTags>
     <SyntaxFilters>CSharp</SyntaxFilters>
   </PropertyGroup>

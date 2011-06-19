@@ -74,6 +74,7 @@
     <Content Include="UmbracoXsltScripts\LanguageParameter.xslt" />
     <Content Include="UmbracoXsltScripts\PropertyTranslation.xslt" />
     <Content Include="UmbracoXsltScripts\SelectedLanguage.xslt" />
+    <Content Include="UmbracoXsltScripts\SetPageCulture.xslt" />
     <Content Include="UmbracoXsltScripts\TranslatedNavigation.xslt" />
     <Content Include="UmbracoXsltScripts\TranslationRedirect.xslt" />
     <Content Include="Web\Backoffice\TranslationCreation.aspx" />
@@ -105,6 +106,7 @@
       <DependentUpon>LanguageSelector.ascx</DependentUpon>
     </Compile>
     <Compile Include="Web\QueryString.cs" />
+    <Compile Include="XSLTExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -118,7 +120,7 @@
     <Content Include="UmbracoRazorScripts\TranslationRedirect.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UmbracoRazorScripts\SetSelectedCulure.cshtml" />
+    <Content Include="UmbracoRazorScripts\SetPageCulture.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

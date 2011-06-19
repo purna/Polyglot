@@ -118,5 +118,29 @@ namespace Dimi.Polyglot.BLL
             IList<Language> languages = GetLanguages();
             return (from language in languages where language.ISOCode == isoCode select language.CultureAlias).Single();
         }
+
+        /// <summary>
+        /// Sets the current culture according to the language passed in as a parameter
+        /// </summary>
+        /// <param name="languageIsoCode">The ISO code of the language, the corresponding culture of which will be set as the culture of the system</param>
+        public static void SetPageCulture(string languageISOCode)
+        {
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]$");
+
+            string culture = string.Empty;
+
+            if (!string.IsNullOrEmpty(languageISOCode) && regex.IsMatch(languageISOCode) && Languages.ExistsLanguage(languageISOCode.ToLower()))
+            {
+                culture = Languages.GetLanguageCulture(languageISOCode.ToLower());
+            }
+            else
+            {
+                culture = Languages.GetDefaultLanguage();
+                culture = Languages.GetDefaultCulture();
+            }
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(culture);
+        }
     }
 }
