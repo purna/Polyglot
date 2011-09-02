@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using umbraco.interfaces;
 
 namespace Dimi.Polyglot.Web.Backoffice
 {
     /// <summary>
     /// The translation creation action
     /// </summary>
-    public class TranslationCreationAction : umbraco.interfaces.IAction
+    public class TranslationCreationAction : IAction
     {
+        #region IAction Members
+
         public string Alias
         {
             get { return "Create translations"; }
@@ -32,8 +31,10 @@ namespace Dimi.Polyglot.Web.Backoffice
 
         public string JsSource
         {
-            get {
-                return @"
+            get
+            {
+                return
+                    @"
                     function openTranslationCreation() {
                         if (UmbClientMgr.mainTree().getActionNode().nodeId != '-1' && UmbClientMgr.mainTree().getActionNode().nodeType != '') {
                             parent.right.document.location.href = 'plugins/Dimi.Polyglot/TranslationCreation.aspx?NodeID=' + UmbClientMgr.mainTree().getActionNode().nodeId;
@@ -53,5 +54,7 @@ namespace Dimi.Polyglot.Web.Backoffice
         {
             get { return false; }
         }
+
+        #endregion
     }
 }

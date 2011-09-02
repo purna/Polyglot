@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using Dimi.Polyglot.Model;
 
 namespace Dimi.Polyglot.BLL
@@ -20,7 +17,5 @@ namespace Dimi.Polyglot.BLL
         {
             return DAL.ContentType.GetPropertyList(contentTypeId);
         }
-
-        
     }
 }

@@ -1,8 +1,14 @@
-﻿@{
-    string selectedLanguage = "";
-    string lang = Request.Params["lang"];
-    
-    System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]$");
+﻿@*
+  SelectedLanguage.cshtml
+  Part of the Polyglot package.
+*@
+@using System.Text.RegularExpressions
+@using Dimi.Polyglot.BLL
+@{
+    var selectedLanguage = "";
+    var lang = Request.Params["lang"];
+
+    var regex = new Regex("^[a-zA-Z][a-zA-Z]$");
 
     if (!string.IsNullOrEmpty(lang) && regex.IsMatch(lang))
     {
@@ -10,8 +16,7 @@
     }
     else
     {
-        selectedLanguage = Dimi.Polyglot.BLL.Languages.GetDefaultLanguage();
+        selectedLanguage = Languages.GetDefaultLanguage();
     }
-@selectedLanguage.ToLower()
+    @selectedLanguage.ToLower()
 }
-

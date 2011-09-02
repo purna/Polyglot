@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile ="../../masterpages/umbracoPage.Master" AutoEventWireup="true" CodeBehind="TranslationCreation.aspx.cs" Inherits="Dimi.Polyglot.Web.Backoffice.TranslationCreation" %>
 <%@ Register Namespace="umbraco.uicontrols" Assembly="controls" TagPrefix="umb" %>
 <asp:Content ID="Content" ContentPlaceHolderID="body" runat="server">
-<umb:UmbracoPanel ID="Panel1" runat="server" hasMenu="true" Text="Create Language Documents">
+    <umb:UmbracoPanel ID="Panel1" runat="server" hasMenu="true" Text="Create Language Documents">
         <umb:Pane ID="Pane1" runat="server">
             <umb:PropertyPanel ID="DocumentDescription" runat="server" Text="Document details">
             </umb:PropertyPanel>

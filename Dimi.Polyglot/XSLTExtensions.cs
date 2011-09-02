@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Dimi.Polyglot.BLL;
 
 namespace Dimi.Polyglot
 {
@@ -16,7 +13,7 @@ namespace Dimi.Polyglot
         /// <param name="languageISOCode">The ISO code of the language, the corresponding culture of which will be set as the culture of the page</param>
         public static void SetPageCulture(string languageISOCode)
         {
-            BLL.Languages.SetPageCulture(languageISOCode);
+            Languages.SetPageCulture(languageISOCode);
         }
     }
 }

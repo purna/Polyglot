@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 using Dimi.Polyglot.Model;
-
 
 namespace Dimi.Polyglot.BLL
 {
@@ -67,34 +67,42 @@ namespace Dimi.Polyglot.BLL
         /// <returns>The list of languages</returns>
         public static IList<Language> GetLanguages()
         {
+            string appendLanguageCodes;
+            try
+            {
+                appendLanguageCodes = ConfigurationManager.AppSettings["uPolyglotAppendLanguageCodes"];
+            }
+            catch
+            {
+                appendLanguageCodes = string.Empty;
+            }
+
             IList<Language> languages = new List<Language>();
-              IEnumerable<umbraco.cms.businesslogic.language.Language> umbracoLanguages = 
-                  umbraco.cms.businesslogic.language.Language.GetAllAsList();
-              int sequence = 0;
-                foreach (umbraco.cms.businesslogic.language.Language umbLanguage in umbracoLanguages)
-                {
-                    string isoCode = umbLanguage.CultureAlias.Substring(0, 2);
-                    string description = umbLanguage.FriendlyName;
+            var umbracoLanguages =
+                umbraco.cms.businesslogic.language.Language.GetAllAsList();
+            var sequence = 0;
+            foreach (var umbLanguage in umbracoLanguages)
+            {
+                var isoCode = umbLanguage.CultureAlias.Substring(0, 2);
+                var description = CultureInfo.CreateSpecificCulture(umbLanguage.CultureAlias).NativeName; // used to be umbLanguage.FriendlyName;
+                
+                if (description.Contains('('))
+                    description = description.Substring(0, description.IndexOf('(')).Trim();
 
-                    if (description.Contains('('))
-                        description = description.Substring(0, description.IndexOf('(')).Trim();
-
-                    if ((from lang in languages
-                         where lang.ISOCode == isoCode
-                         select lang).Count() == 0)
-                    {
-                        Language language = new Language
-                        {
-                            ISOCode = isoCode,
-                            Description = description + " (" + isoCode + ")",
-                            CultureAlias = umbLanguage.CultureAlias,
-                            Sequence = sequence
-                        };
-                        languages.Add(language);
-                        sequence++;
-                    }
-                }
-                return languages;
+                if ((from lang in languages
+                     where lang.ISOCode == isoCode
+                     select lang).Count() != 0) continue;
+                var language = new Language
+                                   {
+                                       ISOCode = isoCode,
+                                       Description = description + (appendLanguageCodes != "false" ? " (" + isoCode + ")" : string.Empty),
+                                       CultureAlias = umbLanguage.CultureAlias,
+                                       Sequence = sequence
+                                   };
+                languages.Add(language);
+                sequence++;
+            }
+            return languages;
         }
 
         /// <summary>
@@ -104,7 +112,7 @@ namespace Dimi.Polyglot.BLL
         /// <returns>True if the language has been declared; false otherwise</returns>
         public static bool ExistsLanguage(string isoCode)
         {
-            IList<Language> languages = GetLanguages();
+            var languages = GetLanguages();
             return ((from language in languages where language.ISOCode == isoCode select language).Count() > 0);
         }
 
@@ -115,32 +123,33 @@ namespace Dimi.Polyglot.BLL
         /// <returns>The culture, e.g. "en-GB"</returns>
         public static string GetLanguageCulture(string isoCode)
         {
-            IList<Language> languages = GetLanguages();
+            var languages = GetLanguages();
             return (from language in languages where language.ISOCode == isoCode select language.CultureAlias).Single();
         }
 
         /// <summary>
         /// Sets the current culture according to the language passed in as a parameter
         /// </summary>
-        /// <param name="languageIsoCode">The ISO code of the language, the corresponding culture of which will be set as the culture of the system</param>
+        /// <param name="languageISOCode">The language ISO code.</param>
+        /// <remarks></remarks>
         public static void SetPageCulture(string languageISOCode)
         {
-            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]$");
+            var regex = new Regex("^[a-zA-Z][a-zA-Z]$");
 
-            string culture = string.Empty;
+            string culture;
 
-            if (!string.IsNullOrEmpty(languageISOCode) && regex.IsMatch(languageISOCode) && Languages.ExistsLanguage(languageISOCode.ToLower()))
+            if (!string.IsNullOrEmpty(languageISOCode) && regex.IsMatch(languageISOCode) &&
+                ExistsLanguage(languageISOCode.ToLower()))
             {
-                culture = Languages.GetLanguageCulture(languageISOCode.ToLower());
+                culture = GetLanguageCulture(languageISOCode.ToLower());
             }
             else
             {
-                culture = Languages.GetDefaultLanguage();
-                culture = Languages.GetDefaultCulture();
+                culture = GetDefaultCulture();
             }
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(culture);
-            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture(culture);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture);
         }
     }
 }

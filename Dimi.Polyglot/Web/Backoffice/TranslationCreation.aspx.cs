@@ -1,74 +1,82 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Zeta.EnterpriseLibrary.Web;
+using Dimi.Polyglot.BLL;
 using Dimi.Polyglot.Extensions;
+using Zeta.EnterpriseLibrary.Web;
+using umbraco.BasePages;
+using umbraco.cms.businesslogic.web;
 
 namespace Dimi.Polyglot.Web.Backoffice
 {
     /// <summary>
     /// Page that manages the creation of translation nodes in the back office of the site
     /// </summary>
-    public partial class TranslationCreation : umbraco.BasePages.BasePage
+    public partial class TranslationCreation : BasePage
     {
-        QueryString queryString;
-        int NodeID;
+        private int _nodeID;
+        private QueryString _queryString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            queryString = new QueryString(Page);
-            NodeID = queryString["NodeID"].ToInt();
-            umbraco.cms.businesslogic.web.Document currentDocument = new umbraco.cms.businesslogic.web.Document(NodeID);
+            _queryString = new QueryString(Page);
+            _nodeID = _queryString["NodeID"].ToInt();
+            var currentDocument = new Document(_nodeID);
             DocumentDescription.Text = currentDocument.Text;
 
             //if (BLL.DocumentTranslation.GetTranslationFolderContentType(NodeID) != null)
 
-            string status = BLL.DocumentTranslation.CheckTranslationInfrastructure(NodeID);
+            var status = DocumentTranslation.CheckTranslationInfrastructure(_nodeID);
             if (status == "ok")
             {
                 if (!IsPostBack)
                 {
-                    CheckBoxList1.DataSource = BLL.Languages.GetLanguages();
+                    CheckBoxList1.DataSource = Languages.GetLanguages();
                     CheckBoxList1.DataValueField = "ISOCode";
                     CheckBoxList1.DataTextField = "Description";
                     CheckBoxList1.DataBind();
 
                     foreach (ListItem li in CheckBoxList1.Items)
                     {
-                        if (BLL.DocumentTranslation.TranslationNodeExists(NodeID, li.Value))
+                        if (DocumentTranslation.TranslationNodeExists(_nodeID, li.Value))
                         {
                             li.Selected = false;
                             li.Enabled = false;
                         }
                         else
                         {
-                            if (li.Value.ToLower() != BLL.Languages.GetDefaultLanguage()) li.Selected = true;
+                            if (li.Value.ToLower() != Languages.GetDefaultLanguage()) li.Selected = true;
                             li.Enabled = true;
                         }
                     }
                 }
 
-                string savedParam = queryString["saved"].ToStr();
+                var savedParam = _queryString["saved"].ToStr();
                 if (!string.IsNullOrEmpty(savedParam))
                 {
                     switch (savedParam)
                     {
                         case "ok":
                             {
-                                ((umbraco.BasePages.BasePage)HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.save, "Successful creation", "Translation documents created. Please reload nodes.");
+                                ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(
+                                    speechBubbleIcon.save, "Successful creation",
+                                    "Translation documents created. Please reload nodes.");
                                 break;
                             }
                         case "NoLangProp":
                             {
-                                ((umbraco.BasePages.BasePage)HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.error, "Error", "Creation failed because there is no Label field with the alias 'language' in the translation document type");
+                                ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(
+                                    speechBubbleIcon.error, "Error",
+                                    "Creation failed because there is no Label field with the alias 'language' in the translation document type");
                                 break;
                             }
                         default:
                             {
-                                ((umbraco.BasePages.BasePage)HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.error, "Error", "There was an error creating the translation documents");
+                                ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(
+                                    speechBubbleIcon.error, "Error",
+                                    "There was an error creating the translation documents");
                                 break;
                             }
                     }
@@ -78,7 +86,8 @@ namespace Dimi.Polyglot.Web.Backoffice
             {
                 PropertyPanel1.Visible = false;
                 PropertyPanel2.Visible = true;
-                ((umbraco.BasePages.BasePage)HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.warning, "Infrastructure issue", status);
+                ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.warning,
+                                                                                      "Infrastructure issue", status);
             }
         }
 
@@ -91,16 +100,16 @@ namespace Dimi.Polyglot.Web.Backoffice
             save.ImageUrl = "/umbraco/images/editor/save.gif";
             save.AlternateText = "Save";
 
-            save.Click += new ImageClickEventHandler(save_Click);
+            save.Click += save_Click;
 
             /*** MULTI_LANGUAGE_SELECT ***/
             CheckBoxMultiLanguageSelect.AutoPostBack = true;
-            CheckBoxMultiLanguageSelect.CheckedChanged += new EventHandler(CheckBoxMultiLanguageSelect_CheckedChanged);
+            CheckBoxMultiLanguageSelect.CheckedChanged += CheckBoxMultiLanguageSelect_CheckedChanged;
         }
 
-        void CheckBoxMultiLanguageSelect_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxMultiLanguageSelect_CheckedChanged(object sender, EventArgs e)
         {
-            if (BLL.DocumentTranslation.GetTranslationFolderContentType(NodeID) != null)
+            if (DocumentTranslation.GetTranslationFolderContentType(_nodeID) != null)
             {
                 var s = sender as CheckBox;
 
@@ -114,34 +123,29 @@ namespace Dimi.Polyglot.Web.Backoffice
             }
         }
 
-        void save_Click(object sender, ImageClickEventArgs e)
+        private void save_Click(object sender, ImageClickEventArgs e)
         {
-            if (BLL.DocumentTranslation.GetTranslationFolderContentType(NodeID) != null)
+            if (DocumentTranslation.GetTranslationFolderContentType(_nodeID) != null)
             {
-                string saved = "ok";
+                var saved = "ok";
                 try
                 {
-                    if (!BLL.DocumentTranslation.TranslationFolderExists(NodeID))
-                        if (!BLL.DocumentTranslation.TranslationFolderCreate(NodeID)) throw new Exception();
+                    if (!DocumentTranslation.TranslationFolderExists(_nodeID))
+                        if (!DocumentTranslation.TranslationFolderCreate(_nodeID)) throw new Exception();
 
-                    foreach (ListItem li in CheckBoxList1.Items)
+                    if (CheckBoxList1.Items.Cast<ListItem>().Where(li => li.Selected).Any(li => !DocumentTranslation.TranslationNodeCreate(_nodeID, li.Value)))
                     {
-                        if (li.Selected)
-                        {
-                            if (!BLL.DocumentTranslation.TranslationNodeCreate(NodeID, li.Value))
-                                throw new Exception();
-                        }
+                        throw new Exception();
                     }
 
-                    BLL.DocumentTranslation.SortTranslationNodes(NodeID);
+                    DocumentTranslation.SortTranslationNodes(_nodeID);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if (ex.Message == "NoLangProp") saved = "NoLangProp";
-                    else saved = "failed";
+                    saved = ex.Message == "NoLangProp" ? "NoLangProp" : "failed";
                 }
 
-                Response.Redirect(queryString.BeforeUrl + "?NodeID=" + NodeID.ToStr() + "&saved=" + saved);
+                Response.Redirect(_queryString.BeforeUrl + "?NodeID=" + _nodeID.ToStr() + "&saved=" + saved);
             }
         }
     }
