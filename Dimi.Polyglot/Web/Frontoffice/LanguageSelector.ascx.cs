@@ -46,7 +46,7 @@ namespace Dimi.Polyglot.Web.Frontoffice
 
         private void LoadLanguages()
         {
-            _languages = Languages.GetLanguages();
+            _languages = Languages.GetLanguages(false);
         }
 
         private void CreateLanguageDropDownList()

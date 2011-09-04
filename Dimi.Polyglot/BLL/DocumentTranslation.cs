@@ -177,7 +177,7 @@ namespace Dimi.Polyglot.BLL
             if (translationFolder == null) return;
             foreach (var translationNode in translationFolder.Children)
             {
-                foreach (var lang in Languages.GetLanguages())
+                foreach (var lang in Languages.GetLanguages(true))
                 {
                     if (lang.ISOCode.ToLower() ==
                         translationNode.getProperty(LanguagePropertyAlias).Value.ToString().ToLower())

@@ -33,7 +33,7 @@ namespace Dimi.Polyglot.Web.Backoffice
             {
                 if (!IsPostBack)
                 {
-                    CheckBoxList1.DataSource = Languages.GetLanguages();
+                    CheckBoxList1.DataSource = Languages.GetLanguages(true);
                     CheckBoxList1.DataValueField = "ISOCode";
                     CheckBoxList1.DataTextField = "Description";
                     CheckBoxList1.DataBind();

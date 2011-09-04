@@ -31,7 +31,7 @@ namespace Dimi.Polyglot.BLL
 
             if (string.IsNullOrEmpty(defaultLanguage))
             {
-                defaultLanguage = GetLanguages()[0].ISOCode;
+                defaultLanguage = GetLanguages(true)[0].ISOCode;
             }
 
             return defaultLanguage;
@@ -65,7 +65,7 @@ namespace Dimi.Polyglot.BLL
         /// Gets the list of languages defined in Umbraco in the Settings section, under "Languages"
         /// </summary>
         /// <returns>The list of languages</returns>
-        public static IList<Language> GetLanguages()
+        public static IList<Language> GetLanguages(bool forBackOffice)
         {
             string appendLanguageCodes;
             try
@@ -84,7 +84,7 @@ namespace Dimi.Polyglot.BLL
             foreach (var umbLanguage in umbracoLanguages)
             {
                 var isoCode = umbLanguage.CultureAlias.Substring(0, 2);
-                var description = CultureInfo.CreateSpecificCulture(umbLanguage.CultureAlias).NativeName; // used to be umbLanguage.FriendlyName;
+                var description = forBackOffice ? umbLanguage.FriendlyName : CultureInfo.CreateSpecificCulture(umbLanguage.CultureAlias).NativeName;
                 
                 if (description.Contains('('))
                     description = description.Substring(0, description.IndexOf('(')).Trim();
@@ -95,7 +95,7 @@ namespace Dimi.Polyglot.BLL
                 var language = new Language
                                    {
                                        ISOCode = isoCode,
-                                       Description = description + (appendLanguageCodes != "false" ? " (" + isoCode + ")" : string.Empty),
+                                       Description = description + (appendLanguageCodes != "false" || forBackOffice ? " (" + isoCode + ")" : string.Empty),
                                        CultureAlias = umbLanguage.CultureAlias,
                                        Sequence = sequence
                                    };
@@ -112,7 +112,7 @@ namespace Dimi.Polyglot.BLL
         /// <returns>True if the language has been declared; false otherwise</returns>
         public static bool ExistsLanguage(string isoCode)
         {
-            var languages = GetLanguages();
+            var languages = GetLanguages(true);
             return ((from language in languages where language.ISOCode == isoCode select language).Count() > 0);
         }
 
@@ -123,7 +123,7 @@ namespace Dimi.Polyglot.BLL
         /// <returns>The culture, e.g. "en-GB"</returns>
         public static string GetLanguageCulture(string isoCode)
         {
-            var languages = GetLanguages();
+            var languages = GetLanguages(true);
             return (from language in languages where language.ISOCode == isoCode select language.CultureAlias).Single();
         }
 
