@@ -21,7 +21,16 @@
     <xsl:param name="TitlePropertyAlias" select="macro/TitlePropertyAlias" />
     <ul id="{$UlCssId}">
       <xsl:for-each select="$currentPage/ancestor-or-self::*[@level=$Level and @isDoc]/child::*[@isDoc]">
-        <xsl:variable name="hide" select="child::*[name()=$NaviHideProperty]" />
+        <xsl:variable name="hide">
+          <xsl:choose>
+            <xsl:when test="string-length($NaviHideProperty)!=0">
+              <xsl:value-of select="child::*[name()=$NaviHideProperty]" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="child::*[name()='umbracoNaviHide']" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
         <xsl:if test="$hide!='1' or string-length($hide)=0">
           <xsl:variable name="link">
             <xsl:choose>
