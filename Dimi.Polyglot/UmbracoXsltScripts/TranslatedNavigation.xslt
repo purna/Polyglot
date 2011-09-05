@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE xsl:stylesheet [
-    <!ENTITY nbsp "&#x00A0;">
+  <!ENTITY nbsp "&#x00A0;">
 ]>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:msxml="urn:schemas-microsoft-com:xslt" xmlns:umbraco.library="urn:umbraco.library"
@@ -12,6 +12,7 @@
   <xsl:output method="xml" omit-xml-declaration="yes" />
   <xsl:param name="currentPage" />
   <xsl:include href="../xslt/LanguageParameter.xslt" />
+  <xsl:include href="../xslt/PropertyReferenceTranslation.xslt" />
   <xsl:template match="/">
     <xsl:param name="UlCssId" select="macro/UlCssId" />
     <xsl:param name="Level" select="macro/Level" />
@@ -34,25 +35,11 @@
           </xsl:variable>
           <xsl:variable name="currentPageTypeAlias" select="name()" />
           <xsl:variable name="title">
-            <xsl:choose>
-              <xsl:when
-test="child::*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/*[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/* [name() = $TitlePropertyAlias and not(@isDoc)] != '' and
-string-length(child::*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/*[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/* [name() = $TitlePropertyAlias and not(@isDoc)]) != 0">
-                <xsl:value-of disable-output-escaping="yes"
-                              select="child::*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/*[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/* [name() = $TitlePropertyAlias and not(@isDoc)]" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:choose>
-                  <xsl:when test="string-length(child::*[name() = concat($TitlePropertyAlias, '_', $langISO) and not(@isDoc)]) = 0">
-                    <xsl:value-of disable-output-escaping="yes" select="child::* [name() = $TitlePropertyAlias and not(@isDoc)]" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of disable-output-escaping="yes"
-                                  select="child::*[name() = concat($TitlePropertyAlias, '_', $langISO) and not(@isDoc)]" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:call-template name="PropertyReferenceTranslation">
+              <xsl:with-param name="nodeId" select="@id" />
+              <xsl:with-param name="Property" select="$TitlePropertyAlias" />
+              <xsl:with-param name="langISO" select="$langISO" />
+            </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="currentCss">
             <xsl:if test="contains(umbraco.library:NiceUrl($currentPage/@id),umbraco.library:NiceUrl(@id))">
