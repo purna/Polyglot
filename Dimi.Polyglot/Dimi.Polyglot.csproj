@@ -82,6 +82,7 @@
     <Content Include="UmbracoXsltScripts\TranslationRedirect.xslt" />
     <Content Include="Web\Backoffice\TranslationCreation.aspx" />
     <Content Include="Web\Frontoffice\LanguageSelector.ascx" />
+    <Content Include="Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\ContentType.cs" />
@@ -107,6 +108,16 @@
     </Compile>
     <Compile Include="Web\Frontoffice\LanguageSelector.ascx.designer.cs">
       <DependentUpon>LanguageSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Web\Frontoffice\LanguageSelectorForWebForm.ascx.cs">
+      <DependentUpon>LanguageSelectorForWebForm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Frontoffice\LanguageSelectorForWebForm.ascx.designer.cs">
+      <DependentUpon>LanguageSelectorForWebForm.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Web\Frontoffice\LanguageSelectorUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\QueryString.cs" />
     <Compile Include="XSLTExtensions.cs" />

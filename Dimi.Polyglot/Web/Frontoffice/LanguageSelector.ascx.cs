@@ -14,41 +14,8 @@ namespace Dimi.Polyglot.Web.Frontoffice
     /// <summary>
     /// Drop down list box which allows the selection of languages on the front-end of the site
     /// </summary>
-    public partial class LanguageSelector : UserControl
+    public partial class LanguageSelector : LanguageSelectorUserControl
     {
-        private IList<Language> _languages;
-        private QueryString _queryString;
-        private string _selectedCulture;
-        private string _selectedLanguage;
-
-        private void LoadQueryString()
-        {
-            _queryString = new QueryString(Page);
-
-            var regex = new Regex("^[a-zA-Z][a-zA-Z]$");
-
-            _selectedLanguage = _queryString["lang"];
-
-            if (!string.IsNullOrEmpty(_selectedLanguage) && regex.IsMatch(_selectedLanguage) &&
-                Languages.ExistsLanguage(_selectedLanguage.ToLower()))
-            {
-                _selectedCulture = Languages.GetLanguageCulture(_selectedLanguage.ToLower());
-            }
-            else
-            {
-                _selectedLanguage = Languages.GetDefaultLanguage();
-                _selectedCulture = Languages.GetDefaultCulture();
-            }
-
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(_selectedCulture);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(_selectedCulture);
-        }
-
-        private void LoadLanguages()
-        {
-            _languages = Languages.GetLanguages(false);
-        }
-
         private void CreateLanguageDropDownList()
         {
             var redirectQs = new QueryString(Page);
@@ -57,7 +24,6 @@ namespace Dimi.Polyglot.Web.Frontoffice
             var jsRedirect = redirectQs.AllUrl;
             if (redirectQs.Parameters.Count == 0) jsRedirect += "?lang=";
             else jsRedirect += "&lang=";
-
 
             var sb = new StringBuilder();
             sb.Append("<form method=\"get\" action=\"" + redirectQs.AllUrl + "\">");
@@ -69,26 +35,25 @@ namespace Dimi.Polyglot.Web.Frontoffice
             sb.Append("<select id=\"LanguageDropDownList\" name=\"lang\"  onchange=\"javascript:location='" + jsRedirect +
                       "' + this.options[this.selectedIndex].value\" >");
 
-            foreach (var language in _languages)
+            foreach (var language in AvailableLanguages)
             {
                 var selected = string.Empty;
 
-                if (language.ISOCode == _selectedLanguage.ToLower())
+                if (language.ISOCode == SelectedLanguage.ToLower())
                     selected = " selected=\"selected\" ";
 
                 sb.Append(string.Format("<option value=\"{0}\"" + selected + ">{1}</option>", language.ISOCode,
                                         language.Description));
             }
             sb.Append("</select>");
-            sb.Append("<noscript><input type=\"submit\" value=\">\"></noscript>");
+            sb.Append("<noscript><input type=\"submit\" value=\"&gt;\" /></noscript>");
             sb.Append("</form>");
             LanguageDropDownListLiteral.Text = sb.ToString();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadQueryString();
-            LoadLanguages();
+            Initialise();
             CreateLanguageDropDownList();
         }
     }
