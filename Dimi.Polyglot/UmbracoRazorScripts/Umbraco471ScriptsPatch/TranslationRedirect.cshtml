@@ -1,0 +1,16 @@
+﻿@*
+  TranslationRedirect.cshtml
+  Part of the Polyglot package.
+*@
+@inherits umbraco.MacroEngines.DynamicNodeContext
+@using umbraco.MacroEngines;
+@{
+    DynamicNode page = @Model;
+
+    string basicPageUrl = string.Format("{0}?lang={1}", page.Parent.Parent.Url, page.GetPropertyValue("language"));
+
+    <script type="text/javascript">
+        document.location.href = "@basicPageUrl";
+    </script>
+    <p>Please follow <a href="@basicPageUrl">this link</a></p>
+}
