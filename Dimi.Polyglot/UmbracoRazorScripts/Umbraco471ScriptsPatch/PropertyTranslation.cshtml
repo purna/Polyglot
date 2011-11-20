@@ -10,15 +10,15 @@
 
     DynamicNode page = Model;
 
-    var value = string.Empty;
+    var contentFound = false;
 
-    var prop = page.GetPropertyValue(Parameter.Property + "_" + selectedLanguage);
-    if (prop != null)
+    if (page.HasProperty(Parameter.Property + "_" + selectedLanguage) && !string.IsNullOrEmpty(page.GetPropertyValue(Parameter.Property + "_" + selectedLanguage)))
     {
-        value = prop;
+        contentFound = true;
+        @Html.Raw(umbraco.library.RenderMacroContent(page.GetPropertyValue(Parameter.Property + "_" + selectedLanguage).ToString(), page.Id))
     }
 
-    if (string.IsNullOrEmpty(value))
+    if (!contentFound)
     {
         foreach (DynamicNode child in page.GetChildrenAsList)
         {
@@ -26,34 +26,27 @@
             {
                 foreach (DynamicNode translation in child.GetChildrenAsList)
                 {
-                    prop = translation.GetPropertyValue("language");
+                    var language = translation.GetPropertyValue("language");
 
-                    if (prop != null && prop.ToString().ToLower() == selectedLanguage)
+                    if (language != null && language.ToString().ToLower() == selectedLanguage)
                     {
-                        prop = translation.GetPropertyValue(Parameter.Property);
-                    }
-                    else
-                    {
-                        prop = null;
-                    }
-
-                    if (prop != null)
-                    {
-                        value = prop;
+                        if (translation.HasProperty(Parameter.Property) && !string.IsNullOrEmpty(translation.GetPropertyValue(Parameter.Property)))
+                        {
+                            contentFound = true;
+                            @Html.Raw(umbraco.library.RenderMacroContent(translation.GetPropertyValue(Parameter.Property), translation.Id))
+                        }
                     }
                 }
             }
         }
     }
 
-    if (string.IsNullOrEmpty(value))
+    if (!contentFound)
     {
-        prop = page.GetPropertyValue(Parameter.Property);
-        if (prop != null)
+
+        if (page.HasProperty(Parameter.Property) && !string.IsNullOrEmpty((page.GetPropertyValue(Parameter.Property).ToString())))
         {
-            value = prop;
+            @Html.Raw(umbraco.library.RenderMacroContent(page.GetPropertyValue(Parameter.Property).ToString(), page.Id))
         }
     }
-
-    @Html.Raw(value)
 }

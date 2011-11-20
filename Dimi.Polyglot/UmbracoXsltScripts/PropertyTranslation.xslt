@@ -14,36 +14,37 @@
   <xsl:param name="currentPage" />
   <xsl:template match="/">
     <xsl:param name="Property" select="macro/Property" />
-    <xsl:variable name="resultValue">
-      <xsl:variable name="currentPageTypeAlias" select="name($currentPage)" />
-      <xsl:choose>
-        <xsl:when
-            test="$currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
+    <xsl:variable name="currentPageTypeAlias" select="name($currentPage)" />
+    <xsl:choose>
+      <xsl:when
+          test="$currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
                     *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
                       * [name() = $Property and not(@isDoc)] != '' and
                   string-length($currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
                     *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
                       * [name() = $Property and not(@isDoc)]) != 0">
-          <xsl:value-of disable-output-escaping="yes"
-                      select="$currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
-                          *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
-                            * [name() = $Property and not(@isDoc)]" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:choose>
-            <xsl:when test="string-length($currentPage/
+        <xsl:value-of disable-output-escaping="yes"
+                     select="umbraco.library:RenderMacroContent($currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
+                    *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
+                      * [name() = $Property and not(@isDoc)], $currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
+                          *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/@id)" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="string-length($currentPage/
                              *[name() = concat($Property, '_', $langISO) and not(@isDoc)]) = 0">
-              <xsl:value-of disable-output-escaping="yes"
-                               select="$currentPage/* [name() = $Property and not(@isDoc)]" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of disable-output-escaping="yes"
-                            select="$currentPage/*[name() = concat($Property, '_', $langISO) and not(@isDoc)]" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:value-of disable-output-escaping="yes" select="$resultValue" />
+            <xsl:value-of disable-output-escaping="yes"
+                              select="umbraco.library:RenderMacroContent(
+                               $currentPage/* [name() = $Property and not(@isDoc)], $currentPage/@id)" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of disable-output-escaping="yes"
+                          select="umbraco.library:RenderMacroContent(
+                                $currentPage/*[name() = concat($Property, '_', $langISO) and not(@isDoc)],
+                                $currentPage/@id)" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>
