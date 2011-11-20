@@ -15,7 +15,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>Dimi.Polyglot_API_1_23</HtmlHelpName>
+    <HtmlHelpName>Dimi.Polyglot_API_1_3</HtmlHelpName>
     <Language>en-US</Language>
     <HelpTitle>Polyglot Package API</HelpTitle>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
