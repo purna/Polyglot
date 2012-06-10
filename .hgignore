@@ -1,0 +1,12 @@
+syntax: glob
+
+Dimi.Polyglot\bin\*
+Dimi.Polyglot\obj\*
+
+syntax: regexp
+
+(?i)\.dll$
+(?i)\.pdb$
+(?i)^\_ReSharper
+(?i)\.swp$
+(?i)\.user$
