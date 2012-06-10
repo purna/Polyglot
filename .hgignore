@@ -10,3 +10,4 @@ syntax: regexp
 (?i)^\_ReSharper
 (?i)\.swp$
 (?i)\.user$
+(?i)\.suo$

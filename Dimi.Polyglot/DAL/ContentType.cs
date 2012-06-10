@@ -11,13 +11,18 @@ namespace Dimi.Polyglot.DAL
     public static class ContentType
     {
         /// <summary>
-        /// Gets the list of property types for a given content (document) type
+        /// Gets the list of property types for a given content (document) type, recursively if there are parent types
         /// </summary>
         /// <param name="contentTypeId">The id of the content (document) type</param>
+        /// <param name="rowList">If recursion is triggered, the properties gathered from the previous execution </param>
         /// <returns>The list of property types</returns>
-        public static List<ContentTypePropertyInfo> GetPropertyList(int contentTypeId)
+        public static List<ContentTypePropertyInfo> GetPropertyList(int contentTypeId, List<ContentTypePropertyInfo> rowList = null)
         {
-            var rowList = new List<ContentTypePropertyInfo>();
+            if (rowList == null)
+            {
+                rowList = new List<ContentTypePropertyInfo>();
+            }
+            
 
             var h = DataLayerHelper.CreateSqlHelper(ConfigurationManager.AppSettings["umbracoDbDSN"]);
 
@@ -45,7 +50,23 @@ namespace Dimi.Polyglot.DAL
                     rowList.Add(s);
                 }
             }
-            return rowList;
+
+            var masterContentTypeId = -1;
+
+            using (
+                var reader =
+                    h.ExecuteReader("SELECT masterContentType from [cmsContentType] WHERE nodeId = @contentTypeId",
+                                    h.CreateParameter("contentTypeId", contentTypeId)))
+            {
+                if (reader.Read())
+                {
+                    masterContentTypeId = reader.GetInt("masterContentType");
+                    
+                }
+            }
+
+            return masterContentTypeId == -1 ? rowList : GetPropertyList(masterContentTypeId, rowList);
+            
         }
     }
 }

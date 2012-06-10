@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Dimi.Polyglot.Model;
 using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic.web;
 
@@ -99,8 +97,7 @@ namespace Dimi.Polyglot.BLL
                 var folderProperties = ContentType.GetPropertyList(contentType.Id);
 
                 if (
-                    (from prop in folderProperties where prop.Alias == GetHideFromNavigationPropertyAlias() select prop)
-                        .Count() > 0)
+                    (from prop in folderProperties where prop.Alias == GetHideFromNavigationPropertyAlias() select prop).Any())
                     folder.getProperty(GetHideFromNavigationPropertyAlias()).Value = true;
 
                 return true;
@@ -202,7 +199,7 @@ namespace Dimi.Polyglot.BLL
                 var translationFolderContentType = GetTranslationFolderContentType(nodeID);
                 if (translationFolderContentType != null)
                 {
-                    if (translationFolderContentType.AllowedChildContentTypeIDs.Count() == 0)
+                    if (!translationFolderContentType.AllowedChildContentTypeIDs.Any())
                         throw new Exception(
                             "Translation document type does not exist, or it is not an allowed child nodetype of the translation folder document type.");
 
@@ -213,9 +210,9 @@ namespace Dimi.Polyglot.BLL
                     var translationContentType =
                         new DocumentType(translationFolderContentType.AllowedChildContentTypeIDs[0]);
 
-                    if ((from prop in translationContentType.PropertyTypes
-                         where prop.Alias == LanguagePropertyAlias
-                         select prop).Count() == 0)
+                    if (!(from prop in translationContentType.PropertyTypes
+                          where prop.Alias == LanguagePropertyAlias
+                          select prop).Any())
                         throw new Exception("Translation document type does not contain the '" + LanguagePropertyAlias +
                                             "' (alias) property");
 
@@ -224,7 +221,7 @@ namespace Dimi.Polyglot.BLL
                              !(from pr in ContentType.GetPropertyList(nodeDoc.ContentType.Id) select pr.Alias).Contains(
                                  p.Alias)
                              && p.Alias != GetHideFromNavigationPropertyAlias() && p.Alias != LanguagePropertyAlias
-                         select p).Count() > 0)
+                         select p).Any())
                         throw new Exception(
                             "Translation document type contains properties that do not exist in the document type (apart from language and navigation hiding)");
                 }
