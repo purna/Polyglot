@@ -7,12 +7,12 @@
 @{
     int level = String.IsNullOrEmpty(Parameter.Level) ? 1 : int.Parse(Parameter.Level);
     string ulId = String.IsNullOrEmpty(Parameter.UlCssId) ? "" : String.Format(" id={0}", Parameter.UlCssId);
-    var parent = @Model.AncestorOrSelf(level);
+    var parent = Model.AncestorOrSelf(level);
     if (parent != null)
     {
         string visibleCondition = string.IsNullOrEmpty(Parameter.NaviHideProperty) ? "Visible" : string.Format("{0} == false", Parameter.NaviHideProperty);
 
-        <ul@ulId>
+        <ul @ulId>
         @foreach (var item in parent.Children.Where(visibleCondition))
         {
             string selected = Array.IndexOf(Model.Path.Split(','), item.Id.ToString()) >= 0 ? string.Format(" class=\"{0}\"", Parameter.CurrentItemCssClass) : "";
@@ -29,7 +29,7 @@
                 link += "?lang=" + selectedLanguage;
             }
 
-            <li@Html.Raw(selected)><a href='@link' title='@Html.Raw(@translatedTitle)'>@Html.Raw(translatedTitle)</a>
+            <li @Html.Raw(selected)><a href='@link' title='@Html.Raw(@translatedTitle)'>@Html.Raw(translatedTitle)</a>
             </li>
         }
     </ul>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using Dimi.Polyglot.Model;
 using umbraco.DataLayer;
@@ -18,13 +19,25 @@ namespace Dimi.Polyglot.DAL
         /// <returns>The list of property types</returns>
         public static List<ContentTypePropertyInfo> GetPropertyList(int contentTypeId, List<ContentTypePropertyInfo> rowList = null)
         {
+            var onUmbraco6 = false;
+
             if (rowList == null)
             {
                 rowList = new List<ContentTypePropertyInfo>();
             }
-            
 
-            var h = DataLayerHelper.CreateSqlHelper(ConfigurationManager.AppSettings["umbracoDbDSN"]);
+            ISqlHelper h;
+            try
+            {
+                h = DataLayerHelper.CreateSqlHelper(ConfigurationManager.AppSettings["umbracoDbDSN"]);
+            }
+            catch (Exception)
+            {
+                // Using umbraco 6 maybe?
+                h = DataLayerHelper.CreateSqlHelper(ConfigurationManager.ConnectionStrings["umbracoDbDSN"].ConnectionString);
+                onUmbraco6 = true;
+            }
+
 
             using (
                 var reader =
@@ -38,7 +51,7 @@ namespace Dimi.Polyglot.DAL
                                                         Id = reader.GetInt("Id"),
                                                         DataTypeId = reader.GetInt("DataTypeId"),
                                                         ContentTypeId = reader.GetInt("ContentTypeId"),
-                                                        TabId = reader.GetInt("TabId"),
+                                                        // TabId = reader.GetInt("TabId"),
                                                         Alias = reader.GetString("Alias"),
                                                         Name = reader.GetString("Name"),
                                                         HelpText = reader.GetString("HelpText"),
@@ -53,20 +66,37 @@ namespace Dimi.Polyglot.DAL
 
             var masterContentTypeId = -1;
 
-            using (
-                var reader =
-                    h.ExecuteReader("SELECT masterContentType from [cmsContentType] WHERE nodeId = @contentTypeId",
-                                    h.CreateParameter("contentTypeId", contentTypeId)))
+            if (!onUmbraco6)
             {
-                if (reader.Read())
+                using (
+                    var reader =
+                        h.ExecuteReader("SELECT masterContentType from [cmsContentType] WHERE nodeId = @contentTypeId",
+                                        h.CreateParameter("contentTypeId", contentTypeId)))
                 {
-                    masterContentTypeId = reader.GetInt("masterContentType");
-                    
+                    if (reader.Read())
+                    {
+                        masterContentTypeId = reader.GetInt("masterContentType");
+
+                    }
+                }
+            }
+            else
+            {
+                using (
+                    var reader =
+                        h.ExecuteReader("SELECT parentContentTypeId from [cmsContentType2ContentType] WHERE childContentTypeId = @childContentTypeId",
+                                        h.CreateParameter("childContentTypeId", contentTypeId)))
+                {
+                    if (reader.Read())
+                    {
+                        masterContentTypeId = reader.GetInt("parentContentTypeId");
+
+                    }
                 }
             }
 
             return masterContentTypeId == -1 ? rowList : GetPropertyList(masterContentTypeId, rowList);
-            
+
         }
     }
 }

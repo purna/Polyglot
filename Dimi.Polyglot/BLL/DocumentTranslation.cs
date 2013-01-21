@@ -141,6 +141,7 @@ namespace Dimi.Polyglot.BLL
                 try
                 {
                     langNode.getProperty(LanguagePropertyAlias).Value = languageISOCode;
+                    langNode.Save();
                 }
                 catch
                 {
@@ -156,6 +157,7 @@ namespace Dimi.Polyglot.BLL
                         langNode.getProperty(property.Alias).Value = node.getProperty(property.Alias).Value;
                     if (property.Alias == GetHideFromNavigationPropertyAlias())
                         langNode.getProperty(property.Alias).Value = true;
+                    langNode.Save();
                 }
 
                 return true;
