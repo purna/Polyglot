@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package">
+
+  <!-- 
+  	****************************************
+  	* IMPORTS
+	****************************************
+  -->
+  <Import Project="$(MSBuildProjectDirectory)\Lib\MSBuildUmbracoTasks\MSBuild.Umbraco.Tasks.Targets" />
+
+  <!-- 
+  	****************************************
+  	* PROPERTIES
+	****************************************
+  -->
+  <PropertyGroup>
+    <PackageVersion>1.4</PackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootDir>$(MSBuildProjectDirectory)</RootDir>
+    <BuildDir>$(RootDir)\BuildRazor</BuildDir>
+    <PackageDir>$(RootDir)\PackageRazor</PackageDir>
+  </PropertyGroup>
+
+  <!-- 
+  	****************************************
+  	* TARGETS
+	****************************************
+  -->
+
+  <!-- CLEAN -->
+  <Target Name="Clean">
+    <RemoveDir Directories="$(BuildDir)" Condition="Exists('$(BuildDir)')" />
+    <RemoveDir Directories="$(PackageDir)" Condition="Exists('$(PackageDir)')" />
+    <MakeDir Directories="$(BuildDir)" />
+    <MakeDir Directories="$(PackageDir)" />
+  </Target>
+
+  <!-- COMPILE -->
+  <Target Name="Compile" DependsOnTargets="Clean">
+    <MSBuild Projects="Dimi.Polyglot.csproj" />
+  </Target>
+
+  <!-- PREPAIRE FILES -->
+  <Target Name="PrepairFiles" DependsOnTargets="Compile">
+    <ItemGroup>
+      <BinFiles Include="$(RootDir)\Bin\Dimi.Polyglot.dll" />
+      <MacroScripts Include="$(RootDir)\UmbracoRazorScripts\PropertyReferenceTranslation.cshtml" />
+      <MacroScripts Include="$(RootDir)\UmbracoRazorScripts\PropertyTranslation.cshtml" />
+      <MacroScripts Include="$(RootDir)\UmbracoRazorScripts\SelectedLanguage.cshtml" />
+      <MacroScripts Include="$(RootDir)\UmbracoRazorScripts\SetPageCulture.cshtml" />
+      <MacroScripts Include="$(RootDir)\UmbracoRazorScripts\TranslatedNavigation.cshtml" />
+      <MacroScripts Include="$(RootDir)\UmbracoRazorScripts\TranslationRedirect.cshtml" />
+      <MenuFiles Include="$(RootDir)\Web\Backoffice\TranslationCreation.aspx" />
+      <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelector.ascx" />
+      <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
+      <PackageFile Include="$(RootDir)\PackageBuildRazor\Package.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
+    <Copy SourceFiles="@(MacroScripts)" DestinationFolder="$(BuildDir)\macroScripts" />
+    <Copy SourceFiles="@(MenuFiles)" DestinationFolder="$(BuildDir)\Umbraco\Plugins\Dimi.Polyglot" />
+    <Copy SourceFiles="@(UserControls)" DestinationFolder="$(BuildDir)\usercontrols\Dimi.Polyglot" />
+    <Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
+  </Target>
+
+  <!-- MANIFEST -->
+  <Target Name="Manifest" DependsOnTargets="PrepairFiles">
+    <!--<ItemGroup>
+      <ManifestFiles Include="$(BuildDir)\**\*" Exclude="$(BuildDir)\Package.xml" />
+    </ItemGroup>-->
+    <!--<ReadLinesFromFile File="$(RootDir)\Readme.txt">
+      <Output TaskParameter="Lines" ItemName="Readme" />
+    </ReadLinesFromFile>-->
+    <ManifestUpdate ManifestFile="$(BuildDir)\Package.xml"
+      WorkingDirectory="$(BuildDir)"
+      PackageVersion="$(PackageVersion)"
+      Readme="@(Readme->'%(Identity)', '%0a%0d')"
+        Files="@(ManifestFiles)" />
+  </Target>
+
+  <!-- PACKAGE -->
+  <Target Name="Package" DependsOnTargets="Manifest">
+    <ItemGroup>
+      <PackageFiles Include="$(BuildDir)\**\*.*" />
+    </ItemGroup>
+    <Package ManifestFile="$(BuildDir)\Package.xml"
+         WorkingDirectory="$(BuildDir)"
+         OutputDirectory="$(PackageDir)"
+       Files="@(PackageFiles)" />
+  </Target>
+
+</Project>

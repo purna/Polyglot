@@ -2,11 +2,15 @@ syntax: glob
 
 Dimi.Polyglot\bin\*
 Dimi.Polyglot\obj\*
+Dimi.Polyglot\BuildRazor\*
+Dimi.Polyglot\BuildXslt\*
+Dimi.Polyglot\PackageRazor\*
+Dimi.Polyglot\PackageXslt\*
 umbracobinaries\*
 
 syntax: regexp
 
-(?i)\.dll$
+
 (?i)\.pdb$
 (?i)^\_ReSharper
 (?i)\.swp$

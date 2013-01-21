@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <files>
+    <file>
+      <guid>LanguageSelector.ascx</guid>
+      <orgPath>~/usercontrols/Dimi.Polyglot</orgPath>
+      <orgName>LanguageSelector.ascx</orgName>
+    </file>
+    <file>
+      <guid>LanguageSelectorForWebForm.ascx</guid>
+      <orgPath>~/usercontrols/Dimi.Polyglot</orgPath>
+      <orgName>LanguageSelectorForWebForm.ascx</orgName>
+    </file>
+    <file>
+      <guid>PropertyTranslation.cshtml</guid>
+      <orgPath>/macroScripts</orgPath>
+      <orgName>PropertyTranslation.cshtml</orgName>
+    </file>
+    <file>
+      <guid>SetPageCulture.cshtml</guid>
+      <orgPath>/macroScripts</orgPath>
+      <orgName>SetPageCulture.cshtml</orgName>
+    </file>
+    <file>
+      <guid>TranslatedNavigation.cshtml</guid>
+      <orgPath>/macroScripts</orgPath>
+      <orgName>TranslatedNavigation.cshtml</orgName>
+    </file>
+    <file>
+      <guid>TranslationRedirect.cshtml</guid>
+      <orgPath>/macroScripts</orgPath>
+      <orgName>TranslationRedirect.cshtml</orgName>
+    </file>
+    <file>
+      <guid>SelectedLanguage.cshtml</guid>
+      <orgPath>/macroScripts</orgPath>
+      <orgName>SelectedLanguage.cshtml</orgName>
+    </file>
+    <file>
+      <guid>fd3a97ac-a7c6-4d2b-bea3-d066d7974cc2_LanguageSelector.ascx</guid>
+      <orgPath>/usercontrols/Dimi.Polyglot</orgPath>
+      <orgName>LanguageSelector.ascx</orgName>
+    </file>
+    <file>
+      <guid>Dimi.Polyglot.dll</guid>
+      <orgPath>/bin</orgPath>
+      <orgName>Dimi.Polyglot.dll</orgName>
+    </file>
+    <file>
+      <guid>TranslationCreation.aspx</guid>
+      <orgPath>/umbraco/plugins/Dimi.Polyglot</orgPath>
+      <orgName>TranslationCreation.aspx</orgName>
+    </file>
+    <file>
+      <guid>PropertyReferenceTranslation.cshtml</guid>
+      <orgPath>/macroScripts</orgPath>
+      <orgName>PropertyReferenceTranslation.cshtml</orgName>
+    </file>
+    <file>
+      <guid>afed3359-03e4-4314-81ea-d994443b7f4d_LanguageSelectorForWebForm.ascx</guid>
+      <orgPath>/usercontrols/Dimi.Polyglot</orgPath>
+      <orgName>LanguageSelectorForWebForm.ascx</orgName>
+    </file>
+  </files>
+  <info>
+    <package>
+      <name>Polyglot</name>
+      <version>1.4</version>
+      <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
+      <url>http://polyglot.codeplex.com/</url>
+      <requirements>
+        <major>3</major>
+        <minor>0</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Dimitrios Kourkoulis</name>
+      <website>http://dimitros.net</website>
+    </author>
+    <readme><![CDATA[This package adds an option to the context menu of the content tree, which allows the automatic creation of translations of a page, placed in a “folder” under that page. A drop down list box, which is also included in the package, can then be used on the front end by visitors to the site to select their preferred language. When a language is selected, the content is retrieved from one of the above-mentioned translations. If the corresponding translation does not exist, or a specific property of a page has not yet been translated, the content is retrieved from the initial page, which contains the default language.
+
+The package also supports creating individual translation properties for each property on a page and placing them on that same page. This way, instead of working with translation folders as mentioned above, languages can be managed via tabs in the back office (one tab per supported language).
+
+The main advantage of using this package, assuming that it is desired, is consistency. The site will have the same structure regardless of the selected language. In the event that a certain piece of information has not been translated at a given time, the visitors to the site will at least be made aware of its existence, since it will be displayed in the default language. Switching between languages is also very easy for the visitor to the site, as he or she can change the language at any time from any part of the site, using the drop down listbox.
+]]></readme>
+  </info>
+  <DocumentTypes />
+  <Templates>
+    <Template>
+      <Name>Translation</Name>
+      <Alias>Translation</Alias>
+      <Design><![CDATA[<%@ Master Language="C#" MasterPageFile="~/umbraco/masterpages/default.master" AutoEventWireup="true" %>
+
+<asp:Content ContentPlaceHolderID="ContentPlaceHolderDefault" runat="server">
+  <umbraco:Macro Alias="TranslationRedirect" runat="server"></umbraco:Macro>
+</asp:Content>]]></Design>
+    </Template>
+  </Templates>
+  <Stylesheets />
+  <Macros>
+    <macro>
+      <name>Language Selector</name>
+      <alias>LanguageSelector</alias>
+      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>True</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>
+      </scriptingFile>
+      <properties />
+    </macro>
+    <macro>
+      <name>Language Selector For WebForm</name>
+      <alias>LanguageSelectorForWebForm</alias>
+      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>False</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>
+      </scriptingFile>
+      <properties />
+    </macro>
+    <macro>
+      <name>Property Translation</name>
+      <alias>PropertyTranslation</alias>
+      <scriptType>
+      </scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>False</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>PropertyTranslation.cshtml</scriptingFile>
+      <properties>
+        <property name="Property" alias="Property" show="False" propertyType="text" />
+      </properties>
+    </macro>
+    <macro>
+      <name>Set Page Culture</name>
+      <alias>SetPageCulture</alias>
+      <scriptType>
+      </scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>False</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>SetPageCulture.cshtml</scriptingFile>
+      <properties />
+    </macro>
+    <macro>
+      <name>Translated Navigation</name>
+      <alias>TranslatedNavigation</alias>
+      <scriptType>
+      </scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>False</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>TranslatedNavigation.cshtml</scriptingFile>
+      <properties>
+        <property name="UlCssId" alias="UlCssId" show="False" propertyType="text" />
+        <property name="Level" alias="Level" show="False" propertyType="number" />
+        <property name="NaviHideProperty" alias="NaviHideProperty" show="False" propertyType="text" />
+        <property name="CurrentItemCssClass" alias="CurrentItemCssClass" show="False" propertyType="text" />
+        <property name="TitlePropertyAlias" alias="TitlePropertyAlias" show="False" propertyType="text" />
+      </properties>
+    </macro>
+    <macro>
+      <name>Translation Redirect</name>
+      <alias>TranslationRedirect</alias>
+      <scriptType>
+      </scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>False</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>TranslationRedirect.cshtml</scriptingFile>
+      <properties />
+    </macro>
+  </Macros>
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+</umbPackage>
