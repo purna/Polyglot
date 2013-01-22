@@ -37,11 +37,6 @@
       <orgName>SelectedLanguage.cshtml</orgName>
     </file>
     <file>
-      <guid>fd3a97ac-a7c6-4d2b-bea3-d066d7974cc2_LanguageSelector.ascx</guid>
-      <orgPath>/usercontrols/Dimi.Polyglot</orgPath>
-      <orgName>LanguageSelector.ascx</orgName>
-    </file>
-    <file>
       <guid>Dimi.Polyglot.dll</guid>
       <orgPath>/bin</orgPath>
       <orgName>Dimi.Polyglot.dll</orgName>
@@ -55,11 +50,6 @@
       <guid>PropertyReferenceTranslation.cshtml</guid>
       <orgPath>/macroScripts</orgPath>
       <orgName>PropertyReferenceTranslation.cshtml</orgName>
-    </file>
-    <file>
-      <guid>afed3359-03e4-4314-81ea-d994443b7f4d_LanguageSelectorForWebForm.ascx</guid>
-      <orgPath>/usercontrols/Dimi.Polyglot</orgPath>
-      <orgName>LanguageSelectorForWebForm.ascx</orgName>
     </file>
   </files>
   <info>
@@ -102,7 +92,7 @@ The main advantage of using this package, assuming that it is desired, is consis
     <macro>
       <name>Language Selector</name>
       <alias>LanguageSelector</alias>
-      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
+      <scriptType>~/usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
       <scriptAssembly>
       </scriptAssembly>
       <xslt>
@@ -116,7 +106,7 @@ The main advantage of using this package, assuming that it is desired, is consis
     <macro>
       <name>Language Selector For WebForm</name>
       <alias>LanguageSelectorForWebForm</alias>
-      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
+      <scriptType>~/usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
       <scriptAssembly>
       </scriptAssembly>
       <xslt>
