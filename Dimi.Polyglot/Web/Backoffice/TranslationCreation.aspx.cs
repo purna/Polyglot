@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -16,31 +17,39 @@ namespace Dimi.Polyglot.Web.Backoffice
     /// </summary>
     public partial class TranslationCreation : BasePage
     {
-        private int _nodeID;
+        private int _nodeId;
         private QueryString _queryString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             _queryString = new QueryString(Page);
-            _nodeID = _queryString["NodeID"].ToInt();
-            var currentDocument = new Document(_nodeID);
+            _nodeId = _queryString["NodeID"].ToInt();
+            var currentDocument = new Document(_nodeId);
             DocumentDescription.Text = currentDocument.Text;
 
-            //if (BLL.DocumentTranslation.GetTranslationFolderContentType(NodeID) != null)
-
-            var status = DocumentTranslation.CheckTranslationInfrastructure(_nodeID);
+            var status = DocumentTranslation.CheckTranslationInfrastructure(_nodeId);
             if (status == "ok")
             {
                 if (!IsPostBack)
                 {
-                    CheckBoxList1.DataSource = Languages.GetLanguages(true);
+                    var languagesToDisplay = Languages.GetLanguages(true);
+
+                    var hideDefaultLanguage = ConfigurationManager.AppSettings["PolyglotHideDefaultLanguageCheckbox"];
+
+                    if (!string.IsNullOrEmpty(hideDefaultLanguage) && hideDefaultLanguage.ToLower() == "true")
+                    {
+                        languagesToDisplay.Remove(
+                            languagesToDisplay.Single(x => x.CultureAlias == Languages.GetDefaultCulture()));
+                    }
+
+                    CheckBoxList1.DataSource = languagesToDisplay;
                     CheckBoxList1.DataValueField = "ISOCode";
                     CheckBoxList1.DataTextField = "Description";
                     CheckBoxList1.DataBind();
 
                     foreach (ListItem li in CheckBoxList1.Items)
                     {
-                        if (DocumentTranslation.TranslationNodeExists(_nodeID, li.Value))
+                        if (DocumentTranslation.TranslationNodeExists(_nodeId, li.Value))
                         {
                             li.Selected = false;
                             li.Enabled = false;
@@ -109,7 +118,7 @@ namespace Dimi.Polyglot.Web.Backoffice
 
         private void CheckBoxMultiLanguageSelect_CheckedChanged(object sender, EventArgs e)
         {
-            if (DocumentTranslation.GetTranslationFolderContentType(_nodeID) != null)
+            if (DocumentTranslation.GetTranslationFolderContentType(_nodeId) != null)
             {
                 var s = sender as CheckBox;
 
@@ -125,27 +134,27 @@ namespace Dimi.Polyglot.Web.Backoffice
 
         private void save_Click(object sender, ImageClickEventArgs e)
         {
-            if (DocumentTranslation.GetTranslationFolderContentType(_nodeID) != null)
+            if (DocumentTranslation.GetTranslationFolderContentType(_nodeId) != null)
             {
                 var saved = "ok";
                 try
                 {
-                    if (!DocumentTranslation.TranslationFolderExists(_nodeID))
-                        if (!DocumentTranslation.TranslationFolderCreate(_nodeID)) throw new Exception();
+                    if (!DocumentTranslation.TranslationFolderExists(_nodeId))
+                        if (!DocumentTranslation.TranslationFolderCreate(_nodeId)) throw new Exception();
 
-                    if (CheckBoxList1.Items.Cast<ListItem>().Where(li => li.Selected).Any(li => !DocumentTranslation.TranslationNodeCreate(_nodeID, li.Value)))
+                    if (CheckBoxList1.Items.Cast<ListItem>().Where(li => li.Selected).Any(li => !DocumentTranslation.TranslationNodeCreate(_nodeId, li.Value)))
                     {
                         throw new Exception();
                     }
 
-                    DocumentTranslation.SortTranslationNodes(_nodeID);
+                    DocumentTranslation.SortTranslationNodes(_nodeId);
                 }
                 catch (Exception ex)
                 {
                     saved = ex.Message == "NoLangProp" ? "NoLangProp" : "failed";
                 }
 
-                Response.Redirect(_queryString.BeforeUrl + "?NodeID=" + _nodeID.ToStr() + "&saved=" + saved);
+                Response.Redirect(_queryString.BeforeUrl + "?NodeID=" + _nodeId.ToStr() + "&saved=" + saved);
             }
         }
     }
