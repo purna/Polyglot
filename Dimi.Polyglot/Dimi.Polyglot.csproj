@@ -74,6 +74,7 @@
     <Content Include="PackageRazor.build.xml" />
     <Content Include="PackageBuildRazor\package.xml" />
     <Content Include="PackageBuildXslt\package.xml" />
+    <Content Include="PackageXslt.build.xml" />
     <Content Include="UmbracoXsltScripts\LanguageParameter.xslt" />
     <Content Include="UmbracoXsltScripts\PropertyReferenceTranslation.xslt">
       <SubType>Designer</SubType>

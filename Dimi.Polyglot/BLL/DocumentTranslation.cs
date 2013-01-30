@@ -30,20 +30,12 @@ namespace Dimi.Polyglot.BLL
 
             var nodeDoc = new Document(nodeID);
 
-            var test = new DocumentType(1050);
-
-
             var nodeDocContentType = new DocumentType(nodeDoc.ContentType.Id);
             foreach (
                 var contentType in
                     nodeDocContentType.AllowedChildContentTypeIDs.Select(
                         contentTypeId => new DocumentType(contentTypeId)).Where(
-                            contentType => contentType.Alias == nodeDocContentType.Alias + TranslationFolderAliasSuffix
-                            || contentType.Alias == (nodeDocContentType.Alias + TranslationFolderAliasSuffix).Replace("_", string.Empty)) // added because
-                                                                                                                                          // Umb v6 RC does
-                                                                                                                                          // not seem to allow
-                                                                                                                                          // underscores in the
-                                                                                                                                          // alias
+                            contentType => contentType.Alias == nodeDocContentType.Alias + TranslationFolderAliasSuffix)
                 )
             {
                 folderContentType = contentType;
@@ -61,7 +53,7 @@ namespace Dimi.Polyglot.BLL
         {
             var nodeDoc = new Document(nodeID);
 
-            return Document.GetChildrenForTree(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix || doc.ContentType.Alias == (nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix).Replace("_", string.Empty));
+            return Document.GetChildrenForTree(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
         }
 
         /// <summary>

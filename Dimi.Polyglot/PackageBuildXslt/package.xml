@@ -42,11 +42,6 @@
       <orgName>SelectedLanguage.xslt</orgName>
     </file>
     <file>
-      <guid>e02b5824-f8c8-4b67-aa9c-d83781b80c28_LanguageSelector.ascx</guid>
-      <orgPath>/usercontrols/Dimi.Polyglot</orgPath>
-      <orgName>LanguageSelector.ascx</orgName>
-    </file>
-    <file>
       <guid>Dimi.Polyglot.dll</guid>
       <orgPath>/bin</orgPath>
       <orgName>Dimi.Polyglot.dll</orgName>
@@ -60,11 +55,6 @@
       <guid>PropertyReferenceTranslation.xslt</guid>
       <orgPath>/xslt</orgPath>
       <orgName>PropertyReferenceTranslation.xslt</orgName>
-    </file>
-    <file>
-      <guid>0cc99860-7727-4b12-be2d-6fa09c682586_LanguageSelectorForWebForm.ascx</guid>
-      <orgPath>/usercontrols/Dimi.Polyglot</orgPath>
-      <orgName>LanguageSelectorForWebForm.ascx</orgName>
     </file>
   </files>
   <info>
@@ -88,7 +78,6 @@
 The package also supports creating individual translation properties for each property on a page and placing them on that same page. This way, instead of working with translation folders as mentioned above, languages can be managed via tabs in the back office (one tab per supported language).
 
 The main advantage of using this package, assuming that it is desired, is consistency. The site will have the same structure regardless of the selected language. In the event that a certain piece of information has not been translated at a given time, the visitors to the site will at least be made aware of its existence, since it will be displayed in the default language. Switching between languages is also very easy for the visitor to the site, as he or she can change the language at any time from any part of the site, using the drop down listbox.
-
 ]]></readme>
   </info>
   <DocumentTypes />
@@ -108,7 +97,7 @@ The main advantage of using this package, assuming that it is desired, is consis
     <macro>
       <name>Language Selector</name>
       <alias>LanguageSelector</alias>
-      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
+      <scriptType>~/usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
       <scriptAssembly>
       </scriptAssembly>
       <xslt>
@@ -122,7 +111,7 @@ The main advantage of using this package, assuming that it is desired, is consis
     <macro>
       <name>Language Selector For WebForm</name>
       <alias>LanguageSelectorForWebForm</alias>
-      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
+      <scriptType>~/usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
       <scriptAssembly>
       </scriptAssembly>
       <xslt>

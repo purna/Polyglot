@@ -97,7 +97,7 @@ The main advantage of using this package, assuming that it is desired, is consis
       </scriptAssembly>
       <xslt>
       </xslt>
-      <useInEditor>True</useInEditor>
+      <useInEditor>False</useInEditor>
       <refreshRate>0</refreshRate>
       <scriptingFile>
       </scriptingFile>
