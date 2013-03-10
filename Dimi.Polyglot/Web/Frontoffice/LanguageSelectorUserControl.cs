@@ -35,6 +35,20 @@ namespace Dimi.Polyglot.Web.Frontoffice
             {
                 _selectedCulture = Languages.GetLanguageCulture(_selectedLanguage.ToLower());
             }
+            else if (Regex.Matches(Request.RawUrl, "/([A-z]{2})/").Count > 0)
+            {
+                _selectedLanguage = Regex.Matches(Request.RawUrl, "/([A-z]{2})/")[0].Value.ToLower().Replace("/",
+                                                                                                             string
+                                                                                                                 .Empty);
+                if (Languages.ExistsLanguage(_selectedLanguage))
+                {
+                    _selectedCulture = Languages.GetLanguageCulture(_selectedLanguage.ToLower());
+                }
+                else
+                {
+                    Response.Redirect("/");
+                }
+            }
             else
             {
                 _selectedLanguage = Languages.GetDefaultLanguage();
