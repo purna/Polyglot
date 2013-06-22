@@ -56,7 +56,7 @@ namespace Dimi.Polyglot.Web.Backoffice
                         }
                         else
                         {
-                            if (li.Value.ToLower() != Languages.GetDefaultLanguage()) li.Selected = true;
+                            if (li.Value.ToLower() != Languages.GetDefaultLanguage().ToLower()) li.Selected = true;
                             li.Enabled = true;
                         }
                     }
