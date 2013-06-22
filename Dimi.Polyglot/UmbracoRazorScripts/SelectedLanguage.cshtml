@@ -8,7 +8,7 @@
     var selectedLanguage = "";
     var lang = Request.Params["lang"];
 
-    var regex = new Regex("^[a-zA-Z][a-zA-Z]$");
+    var regex = new Regex("^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])$");
 
     if (!string.IsNullOrEmpty(lang) && regex.IsMatch(lang))
     {

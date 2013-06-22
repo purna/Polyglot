@@ -77,17 +77,27 @@ namespace Dimi.Polyglot.BLL
                 appendLanguageCodes = string.Empty;
             }
 
+            // Check if culture info is going to be used
+            var useCultureInLanguageCodeCfg = ConfigurationManager.AppSettings["uPolyglotUseCultureInLanguageCode"];
+            var usingCultureInLanguageCode = !string.IsNullOrEmpty(useCultureInLanguageCodeCfg) &&
+                                                      useCultureInLanguageCodeCfg.ToLower() == "true";
+
             IList<Language> languages = new List<Language>();
             var umbracoLanguages =
                 umbraco.cms.businesslogic.language.Language.GetAllAsList();
             var sequence = 0;
+
             foreach (var umbLanguage in umbracoLanguages)
             {
-                var isoCode = umbLanguage.CultureAlias.Substring(0, 2);
+                
+                var isoCode = usingCultureInLanguageCode ? umbLanguage.CultureAlias : umbLanguage.CultureAlias.Substring(0, 2);
+
                 var description = forBackOffice ? umbLanguage.FriendlyName : CultureInfo.CreateSpecificCulture(umbLanguage.CultureAlias).NativeName;
                 
-                if (description.Contains('('))
+                if (description.Contains('(') && !usingCultureInLanguageCode)
+                {
                     description = description.Substring(0, description.IndexOf('(')).Trim();
+                }
 
                 if ((from lang in languages
                      where lang.ISOCode == isoCode
@@ -102,6 +112,27 @@ namespace Dimi.Polyglot.BLL
                 languages.Add(language);
                 sequence++;
             }
+
+            // Remove culture from the language DESCRIPTION (not from the code) of languages that appear with only
+            // one culture on the list
+            if (usingCultureInLanguageCode)
+            {
+                var singleCultureLanguages =
+                    languages.Where(
+                        x =>
+                        languages.Count(
+                            y => y.CultureAlias.Substring(0, 2).ToLower() == x.CultureAlias.Substring(0, 2).ToLower()) ==
+                        1);
+
+                foreach (var language in singleCultureLanguages)
+                {
+                    if (language.Description.Contains('('))
+                    {
+                        language.Description = language.Description.Substring(0, language.Description.IndexOf('(')).Trim();
+                    }
+                }
+            }
+
             return languages;
         }
 
@@ -113,7 +144,7 @@ namespace Dimi.Polyglot.BLL
         public static bool ExistsLanguage(string isoCode)
         {
             var languages = GetLanguages(true);
-            return ((from language in languages where language.ISOCode == isoCode select language).Count() > 0);
+            return ((from language in languages where language.ISOCode.ToLower() == isoCode.ToLower() select language).Any());
         }
 
         /// <summary>
@@ -124,7 +155,7 @@ namespace Dimi.Polyglot.BLL
         public static string GetLanguageCulture(string isoCode)
         {
             var languages = GetLanguages(true);
-            return (from language in languages where language.ISOCode == isoCode select language.CultureAlias).Single();
+            return (from language in languages where language.ISOCode.ToLower() == isoCode.ToLower() select language.CultureAlias).Single();
         }
 
         /// <summary>
@@ -134,7 +165,7 @@ namespace Dimi.Polyglot.BLL
         /// <remarks></remarks>
         public static void SetPageCulture(string languageISOCode)
         {
-            var regex = new Regex("^[a-zA-Z][a-zA-Z]$");
+            var regex = new Regex("^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])$");
 
             string culture;
 

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web.UI;
-using Dimi.Polyglot.BLL;
-using Dimi.Polyglot.Model;
 using Zeta.EnterpriseLibrary.Web;
 
 namespace Dimi.Polyglot.Web.Frontoffice
@@ -39,7 +32,7 @@ namespace Dimi.Polyglot.Web.Frontoffice
             {
                 var selected = string.Empty;
 
-                if (language.ISOCode == SelectedLanguage.ToLower())
+                if (language.ISOCode.ToLower() == SelectedLanguage.ToLower())
                     selected = " selected=\"selected\" ";
 
                 sb.Append(string.Format("<option value=\"{0}\"" + selected + ">{1}</option>", language.ISOCode,

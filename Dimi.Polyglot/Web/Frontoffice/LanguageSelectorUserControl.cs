@@ -26,7 +26,7 @@ namespace Dimi.Polyglot.Web.Frontoffice
         {
             _queryString = new QueryString(Page);
 
-            var regex = new Regex("^[a-zA-Z][a-zA-Z]$");
+            var regex = new Regex("^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])$");
 
             _selectedLanguage = _queryString["lang"];
 
@@ -35,9 +35,9 @@ namespace Dimi.Polyglot.Web.Frontoffice
             {
                 _selectedCulture = Languages.GetLanguageCulture(_selectedLanguage.ToLower());
             }
-            else if (Regex.Matches(Request.RawUrl, "/([A-z]{2})/").Count > 0)
+            else if (Regex.Matches(Request.RawUrl, "/([A-z]{2}(-[a-zA-Z][a-zA-Z]))/").Count > 0)
             {
-                _selectedLanguage = Regex.Matches(Request.RawUrl, "/([A-z]{2})/")[0].Value.ToLower().Replace("/",
+                _selectedLanguage = Regex.Matches(Request.RawUrl, "/([A-z]{2}(-[a-zA-Z][a-zA-Z]))/")[0].Value.ToLower().Replace("/",
                                                                                                              string
                                                                                                                  .Empty);
                 if (Languages.ExistsLanguage(_selectedLanguage))
