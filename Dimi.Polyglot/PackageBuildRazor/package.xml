@@ -92,7 +92,7 @@ The main advantage of using this package, assuming that it is desired, is consis
     <macro>
       <name>Language Selector</name>
       <alias>LanguageSelector</alias>
-      <scriptType>~/usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
+      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelector.ascx</scriptType>
       <scriptAssembly>
       </scriptAssembly>
       <xslt>
@@ -106,7 +106,7 @@ The main advantage of using this package, assuming that it is desired, is consis
     <macro>
       <name>Language Selector For WebForm</name>
       <alias>LanguageSelectorForWebForm</alias>
-      <scriptType>~/usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
+      <scriptType>usercontrols/Dimi.Polyglot/LanguageSelectorForWebForm.ascx</scriptType>
       <scriptAssembly>
       </scriptAssembly>
       <xslt>

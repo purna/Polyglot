@@ -17,7 +17,7 @@
   <xsl:variable name="requestLang" select="umbraco.library:RequestQueryString('lang')" />
   <xsl:variable name="langISOLowercase">
     <xsl:choose>
-      <xsl:when test="Exslt.ExsltRegularExpressions:test($requestLang, '^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])$') = 1 ">
+      <xsl:when test="Exslt.ExsltRegularExpressions:test($requestLang, '^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])?$') = 1 ">
         <xsl:value-of select="Exslt.ExsltStrings:lowercase($requestLang)" />
       </xsl:when>
       <xsl:otherwise>

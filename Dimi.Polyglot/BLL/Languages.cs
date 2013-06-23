@@ -165,7 +165,7 @@ namespace Dimi.Polyglot.BLL
         /// <remarks></remarks>
         public static void SetPageCulture(string languageISOCode)
         {
-            var regex = new Regex("^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])$");
+            var regex = new Regex("^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])?$");
 
             string culture;
 
