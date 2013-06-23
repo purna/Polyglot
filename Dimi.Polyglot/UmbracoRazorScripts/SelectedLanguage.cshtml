@@ -12,11 +12,12 @@
 
     if (!string.IsNullOrEmpty(lang) && regex.IsMatch(lang))
     {
-        selectedLanguage = lang;
+        selectedLanguage = lang.Length == 5 ? string.Format("{0}{1}", lang.Substring(0,3).ToLower(), 
+            lang.Substring(3,2).ToUpper()) : lang.ToLower();
     }
     else
     {
         selectedLanguage = Languages.GetDefaultLanguage();
     }
-    @selectedLanguage.ToLower()
+    @selectedLanguage
 }

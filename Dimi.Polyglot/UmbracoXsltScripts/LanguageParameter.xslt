@@ -15,13 +15,24 @@
 
   <xsl:variable name="initlang">en</xsl:variable>
   <xsl:variable name="requestLang" select="umbraco.library:RequestQueryString('lang')" />
-  <xsl:variable name="langISO">
+  <xsl:variable name="langISOLowercase">
     <xsl:choose>
       <xsl:when test="Exslt.ExsltRegularExpressions:test($requestLang, '^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])$') = 1 ">
         <xsl:value-of select="Exslt.ExsltStrings:lowercase($requestLang)" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="Exslt.ExsltStrings:lowercase($initlang)" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:variable name="langISO">
+    <xsl:choose>
+      <xsl:when test="string-length($langISOLowercase) = 5">
+        <xsl:value-of select="concat(substring($langISOLowercase, 1, 3), 
+				Exslt.ExsltStrings:uppercase(substring($langISOLowercase, 4, 2)))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$langISOLowercase" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>

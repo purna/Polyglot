@@ -29,7 +29,7 @@
                 {
                     prop = translation.GetProperty("language");
 
-                    if (prop != null && prop.ToString().ToLower() == selectedLanguage)
+                    if (prop != null && prop.ToString().ToLower() == selectedLanguage.ToLower())
                     {
                         prop = translation.GetProperty(property);
                     }

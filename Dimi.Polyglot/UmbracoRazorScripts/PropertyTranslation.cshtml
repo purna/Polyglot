@@ -28,7 +28,7 @@
                 {
                     var language = translation.GetProperty("language");
 
-                    if (language != null && language.ToString().ToLower() == selectedLanguage)
+                    if (language != null && language.ToString().ToLower() == selectedLanguage.ToLower())
                     {
                         if (translation.HasProperty(Parameter.Property) && !string.IsNullOrEmpty(translation.GetProperty(Parameter.Property).ToString()))
                         {
