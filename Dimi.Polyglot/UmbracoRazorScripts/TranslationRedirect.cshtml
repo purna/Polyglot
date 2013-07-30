@@ -7,7 +7,7 @@
 @{
     DynamicNode page = @Model;
 
-    string basicPageUrl = string.Format("{0}?lang={1}", page.Parent.Parent.Url, page.GetProperty("language"));
+    string basicPageUrl = string.Format("{0}?lang={1}", page.Parent.Parent.Url, page.GetPropertyValue("language"));
 
     <script type="text/javascript">
         document.location.href = "@basicPageUrl";

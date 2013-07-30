@@ -1,6 +1,6 @@
 ﻿@*
   PropertyTranslation.cshtml
-  Part of the Polyglot package.
+  Part of the Polyglot package. 
 *@
 @inherits umbraco.MacroEngines.DynamicNodeContext
 @using umbraco.MacroEngines;
@@ -13,10 +13,10 @@
 
     var value = string.Empty;
 
-    var prop = page.GetPropertyValue(property + "_" + selectedLanguage);
+    var prop = page.GetProperty(property + "_" + selectedLanguage);
     if (prop != null)
     {
-        value = prop;
+        value = prop.ToString();
     }
 
     if (string.IsNullOrEmpty(value))
@@ -27,11 +27,11 @@
             {
                 foreach (DynamicNode translation in child.GetChildrenAsList)
                 {
-                    prop = translation.GetPropertyValue("language");
+                    prop = translation.GetProperty("language");
 
                     if (prop != null && prop.ToString().ToLower() == selectedLanguage.ToLower())
                     {
-                        prop = translation.GetPropertyValue(property);
+                        prop = translation.GetProperty(property);
                     }
                     else
                     {
@@ -40,7 +40,7 @@
 
                     if (prop != null)
                     {
-                        value = prop;
+                        value = prop.ToString();
                     }
                 }
             }
@@ -49,10 +49,10 @@
 
     if (string.IsNullOrEmpty(value))
     {
-        prop = page.GetPropertyValue(property);
+        prop = page.GetProperty(property);
         if (prop != null)
         {
-            value = prop;
+            value = prop.ToString();
         }
     }
 
