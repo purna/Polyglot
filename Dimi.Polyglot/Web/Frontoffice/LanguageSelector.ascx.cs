@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Web;
 using Zeta.EnterpriseLibrary.Web;
 
 namespace Dimi.Polyglot.Web.Frontoffice
@@ -17,6 +18,8 @@ namespace Dimi.Polyglot.Web.Frontoffice
             var jsRedirect = redirectQs.AllUrl;
             if (redirectQs.Parameters.Count == 0) jsRedirect += "?lang=";
             else jsRedirect += "&lang=";
+
+            jsRedirect = HttpUtility.HtmlEncode(jsRedirect);
 
             var sb = new StringBuilder();
             sb.Append("<form method=\"get\" action=\"" + redirectQs.AllUrl + "\">");

@@ -55,7 +55,7 @@
   <info>
     <package>
       <name>Polyglot</name>
-      <version>1.51</version>
+      <version>1.52</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
       <url>http://polyglot.codeplex.com/</url>
       <requirements>
