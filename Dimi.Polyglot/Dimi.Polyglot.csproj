@@ -89,6 +89,7 @@
     <Content Include="Web\Backoffice\TranslationCreation.aspx" />
     <Content Include="Web\Frontoffice\LanguageSelector.ascx" />
     <Content Include="Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
+    <Content Include="Web\Images\polyglot.gif" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\ContentType.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="BLL\Languages.cs" />
     <Compile Include="DAL\ContentType.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Installation\InstallAction.cs" />
     <Compile Include="Model\ContentTypeProperty.cs" />
     <Compile Include="Model\Language.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

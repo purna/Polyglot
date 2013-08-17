@@ -56,13 +56,18 @@
       <orgPath>/xslt</orgPath>
       <orgName>PropertyReferenceTranslation.xslt</orgName>
     </file>
+    <file>
+      <guid>polyglot.gif</guid>
+      <orgPath>/umbraco/images</orgPath>
+      <orgName>polyglot.gif</orgName>
+    </file>
   </files>
   <info>
     <package>
       <name>PolyglotXslt</name>
-      <version>1.52</version>
+      <version>1.6</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
-      <url>http://polyglot.codeplex.com/</url>
+      <url>http://our.umbraco.org/projects/backoffice-extensions/polyglot</url>
       <requirements>
         <major>3</major>
         <minor>0</minor>
@@ -192,5 +197,6 @@ The main advantage of using this package, assuming that it is desired, is consis
   <DataTypes />
   <Actions>
     <Action runat="install" alias="addXsltExtension" assembly="/bin/Dimi.Polyglot" type="Dimi.Polyglot.XSLTExtensions" extensionAlias="dimi.polyglot" />
+    <Action runat="install" undo="true" alias="PolyglotCustomInstallAction" />
   </Actions>
 </umbPackage>

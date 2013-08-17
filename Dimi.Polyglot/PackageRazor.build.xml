@@ -14,7 +14,7 @@
 	****************************************
   -->
   <PropertyGroup>
-    <PackageVersion>1.52</PackageVersion>
+    <PackageVersion>1.6</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -56,12 +56,14 @@
       <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelector.ascx" />
       <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
       <PackageFile Include="$(RootDir)\PackageBuildRazor\Package.xml" />
+      <ImageFile Include="$(RootDir)\Web\Images\polyglot.gif" />
     </ItemGroup>
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
     <Copy SourceFiles="@(MacroScripts)" DestinationFolder="$(BuildDir)\macroScripts" />
     <Copy SourceFiles="@(MenuFiles)" DestinationFolder="$(BuildDir)\Umbraco\Plugins\Dimi.Polyglot" />
     <Copy SourceFiles="@(UserControls)" DestinationFolder="$(BuildDir)\usercontrols\Dimi.Polyglot" />
     <Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
+    <Copy SourceFiles="@(ImageFile)" DestinationFolder="$(BuildDir)\Umbraco\images" />
   </Target>
 
   <!-- MANIFEST -->

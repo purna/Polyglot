@@ -11,7 +11,7 @@ namespace Dimi.Polyglot.Web.Backoffice
 
         public string Alias
         {
-            get { return "Create translations"; }
+            get { return "polyglotCreateTranslations"; }
         }
 
         public bool CanBePermissionAssigned
@@ -21,7 +21,7 @@ namespace Dimi.Polyglot.Web.Backoffice
 
         public string Icon
         {
-            get { return "/umbraco/images/umbraco/settingLanguage.gif"; }
+            get { return "/umbraco/images/polyglot.gif"; }
         }
 
         public string JsFunctionName
