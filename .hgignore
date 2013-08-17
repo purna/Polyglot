@@ -10,6 +10,10 @@ umbracobinaries\*
 Help\*
 Dimi.Polyglot.shfbproj_*
 
+Dimi.Polyglot.Test\bin\*
+Dimi.Polyglot.Test\obj\*
+packages\*
+
 syntax: regexp
 
 
