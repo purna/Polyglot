@@ -57,9 +57,9 @@
       <orgName>PropertyReferenceTranslation.xslt</orgName>
     </file>
     <file>
-      <guid>polyglot.gif</guid>
+      <guid>polyglot.png</guid>
       <orgPath>/umbraco/images</orgPath>
-      <orgName>polyglot.gif</orgName>
+      <orgName>polyglot.png</orgName>
     </file>
     <file>
       <guid>Polyglot.config</guid>

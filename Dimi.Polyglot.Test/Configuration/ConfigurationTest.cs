@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NUnit.Framework;
 
 namespace Dimi.Polyglot.Test.Configuration
@@ -14,12 +11,12 @@ namespace Dimi.Polyglot.Test.Configuration
         {
             var nonStandardCultures = Dimi.Polyglot.Configuration.Configuration.NonStandardCultures;
             Assert.True(nonStandardCultures.Count == 2);
-            Assert.True(nonStandardCultures.First().ISOCode == "n1");
-            Assert.True(nonStandardCultures.First().Description == "Non-standard 1");
-            Assert.True(nonStandardCultures.First().CultureAlias == "n1-N1");
-            Assert.True(nonStandardCultures.Last().ISOCode == "n2");
-            Assert.True(nonStandardCultures.Last().Description == "Non-standard 2");
-            Assert.True(nonStandardCultures.Last().CultureAlias == "n2-N2");
+            Assert.True(nonStandardCultures.First().ISOCode == "xy");
+            Assert.True(nonStandardCultures.First().Description == "Non-standard 1 (xy)");
+            Assert.True(nonStandardCultures.First().CultureAlias == "xy-XY");
+            Assert.True(nonStandardCultures.Last().ISOCode == "yz");
+            Assert.True(nonStandardCultures.Last().Description == "Non-standard 2 (yz)");
+            Assert.True(nonStandardCultures.Last().CultureAlias == "yz-YZ");
         }
     }
 }

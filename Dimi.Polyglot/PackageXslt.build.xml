@@ -57,7 +57,7 @@
       <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelector.ascx" />
       <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
       <PackageFile Include="$(RootDir)\PackageBuildXslt\Package.xml" />
-      <ImageFile Include="$(RootDir)\Web\Images\polyglot.gif" />
+      <ImageFile Include="$(RootDir)\Web\Images\polyglot.png" />
       <ConfigFile Include="$(RootDir)\config\Polyglot.config" />
     </ItemGroup>
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />

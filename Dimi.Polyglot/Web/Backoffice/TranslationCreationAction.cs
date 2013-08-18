@@ -21,7 +21,7 @@ namespace Dimi.Polyglot.Web.Backoffice
 
         public string Icon
         {
-            get { return "/umbraco/images/polyglot.gif"; }
+            get { return "/umbraco/images/polyglot.png"; }
         }
 
         public string JsFunctionName
