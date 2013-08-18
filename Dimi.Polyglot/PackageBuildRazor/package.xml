@@ -56,6 +56,11 @@
       <orgPath>/umbraco/images</orgPath>
       <orgName>polyglot.gif</orgName>
     </file>
+    <file>
+      <guid>Polyglot.config</guid>
+      <orgPath>/config</orgPath>
+      <orgName>Polyglot.config</orgName>
+    </file>
   </files>
   <info>
     <package>

@@ -89,11 +89,11 @@ namespace Dimi.Polyglot.BLL
 
             foreach (var umbLanguage in umbracoLanguages)
             {
-                
+
                 var isoCode = usingCultureInLanguageCode ? umbLanguage.CultureAlias : umbLanguage.CultureAlias.Substring(0, 2);
 
                 var description = forBackOffice ? umbLanguage.FriendlyName : CultureInfo.CreateSpecificCulture(umbLanguage.CultureAlias).NativeName;
-                
+
                 if (description.Contains('(') && !usingCultureInLanguageCode)
                 {
                     description = description.Substring(0, description.IndexOf('(')).Trim();
@@ -109,6 +109,14 @@ namespace Dimi.Polyglot.BLL
                                        CultureAlias = umbLanguage.CultureAlias,
                                        Sequence = sequence
                                    };
+                languages.Add(language);
+                sequence++;
+            }
+
+            // Add any non-standard cultures that may exist in Polyglot.config to the list
+            foreach (var language in Configuration.Configuration.NonStandardCultures)
+            {
+                language.Sequence = sequence;
                 languages.Add(language);
                 sequence++;
             }
@@ -179,8 +187,13 @@ namespace Dimi.Polyglot.BLL
                 culture = GetDefaultCulture();
             }
 
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture);
+            // Set the culture of the thread, but only if the selected language is a
+            // standard one. Otherwise, executing these methods would lead to an exception.
+            if (Configuration.Configuration.NonStandardCultures.All(x => x.ISOCode != languageISOCode))
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture);
+            }
         }
     }
 }

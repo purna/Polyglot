@@ -58,6 +58,7 @@
       <UserControls Include="$(RootDir)\Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
       <PackageFile Include="$(RootDir)\PackageBuildXslt\Package.xml" />
       <ImageFile Include="$(RootDir)\Web\Images\polyglot.gif" />
+      <ConfigFile Include="$(RootDir)\config\Polyglot.config" />
     </ItemGroup>
     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
     <Copy SourceFiles="@(XsltScripts)" DestinationFolder="$(BuildDir)\xslt" />
@@ -65,6 +66,7 @@
     <Copy SourceFiles="@(UserControls)" DestinationFolder="$(BuildDir)\usercontrols\Dimi.Polyglot" />
     <Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
     <Copy SourceFiles="@(ImageFile)" DestinationFolder="$(BuildDir)\Umbraco\images" />
+    <Copy SourceFiles="@(ConfigFile)" DestinationFolder="$(BuildDir)\config" />
   </Target>
 
   <!-- MANIFEST -->

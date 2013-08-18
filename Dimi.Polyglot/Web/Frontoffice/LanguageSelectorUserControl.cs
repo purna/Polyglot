@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI;
@@ -55,8 +54,13 @@ namespace Dimi.Polyglot.Web.Frontoffice
                 _selectedCulture = Languages.GetDefaultCulture();
             }
 
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(_selectedCulture);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(_selectedCulture);
+            // Set the culture of the thread, but only if the selected language is a
+            // standard one. Otherwise, executing these methods would lead to an exception.
+            if (Configuration.Configuration.NonStandardCultures.All(x => x.ISOCode != _selectedLanguage))
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(_selectedCulture);
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(_selectedCulture);
+            }
         }
 
         /// <summary>
