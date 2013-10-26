@@ -14,7 +14,7 @@
 	****************************************
   -->
   <PropertyGroup>
-    <PackageVersion>1.6</PackageVersion>
+    <PackageVersion>1.61</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>

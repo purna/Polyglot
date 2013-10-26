@@ -56,5 +56,5 @@
         }
     }
 
-    @Html.Raw(value)
+    @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(value))
 }
