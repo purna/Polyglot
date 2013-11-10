@@ -1,0 +1,37 @@
+﻿@*
+  TranslatedNavigation.cshtml
+  Part of the Polyglot package.
+*@
+@inherits umbraco.MacroEngines.DynamicNodeContext
+@using umbraco.MacroEngines;
+@{
+    int level = String.IsNullOrEmpty(Parameter.Level) ? 1 : int.Parse(Parameter.Level);
+    string ulId = String.IsNullOrEmpty(Parameter.UlCssId) ? "" : String.Format(" id={0}", Parameter.UlCssId);
+    var parent = Model.AncestorOrSelf(level);
+    if (parent != null)
+    {
+        string visibleCondition = string.IsNullOrEmpty(Parameter.NaviHideProperty) ? "Visible" : string.Format("{0} == false", Parameter.NaviHideProperty);
+
+        <ul @ulId>
+        @foreach (var item in parent.Children.Where(visibleCondition))
+        {
+            string selected = Array.IndexOf(Model.Path.Split(','), item.Id.ToString()) >= 0 ? string.Format(" class=\"{0}\"", Parameter.CurrentItemCssClass) : "";
+
+            string selectedLanguage = RenderPage("SelectedLanguage.cshtml").ToString().Trim();
+
+            DynamicNode page = item;
+
+            string translatedTitle = RenderPage("PropertyReferenceTranslation.cshtml", item.Id, Parameter.TitlePropertyAlias, selectedLanguage).ToString();
+
+            string link = item.Url;
+            if (!string.IsNullOrEmpty(selectedLanguage))
+            {
+                link += "?lang=" + selectedLanguage;
+            }
+
+            <li @Html.Raw(selected)><a href='@link' title='@Html.Raw(@translatedTitle)'>@Html.Raw(translatedTitle)</a>
+            </li>
+        }
+    </ul>
+    }
+}

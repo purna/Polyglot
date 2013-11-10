@@ -1,0 +1,8 @@
+﻿@*
+  SetPageCulture.cshtml
+  Part of the Polyglot package.
+*@
+@using Dimi.Polyglot.BLL
+@{
+    Languages.SetPageCulture(RenderPage("SelectedLanguage.cshtml").ToString().Trim());
+}

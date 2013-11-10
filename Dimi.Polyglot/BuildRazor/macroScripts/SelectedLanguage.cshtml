@@ -1,0 +1,23 @@
+﻿@*
+  SelectedLanguage.cshtml
+  Part of the Polyglot package.
+*@
+@using System.Text.RegularExpressions
+@using Dimi.Polyglot.BLL
+@{
+    var selectedLanguage = "";
+    var lang = Request.Params["lang"];
+
+    var regex = new Regex("^[a-zA-Z][a-zA-Z](-[a-zA-Z][a-zA-Z])?$");
+
+    if (!string.IsNullOrEmpty(lang) && regex.IsMatch(lang))
+    {
+        selectedLanguage = lang.Length == 5 ? string.Format("{0}{1}", lang.Substring(0,3).ToLower(), 
+            lang.Substring(3,2).ToUpper()) : lang.ToLower();
+    }
+    else
+    {
+        selectedLanguage = Languages.GetDefaultLanguage();
+    }
+    @selectedLanguage
+}
