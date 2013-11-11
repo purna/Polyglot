@@ -7,8 +7,9 @@ using System.Web.UI.WebControls;
 using Dimi.Polyglot.BLL;
 using Dimi.Polyglot.Extensions;
 using Zeta.EnterpriseLibrary.Web;
-using umbraco.BasePages;
 using umbraco.cms.businesslogic.web;
+using Umbraco.Web.UI.Pages;
+using Umbraco.Web.UI;
 
 namespace Dimi.Polyglot.Web.Backoffice
 {
@@ -70,21 +71,21 @@ namespace Dimi.Polyglot.Web.Backoffice
                         case "ok":
                             {
                                 ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(
-                                    speechBubbleIcon.save, "Successful creation",
+                                    SpeechBubbleIcon.Save, "Successful creation",
                                     "Translation documents created. Please reload nodes.");
                                 break;
                             }
                         case "NoLangProp":
                             {
                                 ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(
-                                    speechBubbleIcon.error, "Error",
+                                    SpeechBubbleIcon.Error, "Error",
                                     "Creation failed because there is no Label field with the alias 'language' in the translation document type");
                                 break;
                             }
                         default:
                             {
                                 ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(
-                                    speechBubbleIcon.error, "Error",
+                                    SpeechBubbleIcon.Error, "Error",
                                     "There was an error creating the translation documents");
                                 break;
                             }
@@ -95,7 +96,7 @@ namespace Dimi.Polyglot.Web.Backoffice
             {
                 PropertyPanel1.Visible = false;
                 PropertyPanel2.Visible = true;
-                ((BasePage) HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(speechBubbleIcon.warning,
+                ((BasePage)HttpContext.Current.Handler).ClientTools.ShowSpeechBubble(SpeechBubbleIcon.Warning,
                                                                                       "Infrastructure issue", status);
             }
         }

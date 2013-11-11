@@ -38,11 +38,11 @@ namespace Dimi.Polyglot.Web.Backoffice
             var i = new Umbraco.Web.Models.Trees.MenuItem("polyglotCreateTranslations", "Create translations");
 
             //optional, if you want to load a legacy page, otherwise it will just follow convention
-            i.AdditionalData.Add("actionUrl", "/Umbraco/Plugins/Dimi.Polyglot/TranslationCreation.aspx");
+            i.AdditionalData.Add("actionUrl", "/Umbraco/Plugins/Dimi.Polyglot/TranslationCreation.aspx?NodeId=" + e.NodeId);
 
             //sets the icon to icon-wine-glass 
             i.Icon = "polyglot";
-
+            
             //insert at index 5
             e.Menu.Items.Insert(5, i);
         }
