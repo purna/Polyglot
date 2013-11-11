@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using Dimi.Polyglot.Model;
+using Umbraco.Core;
+using Umbraco.Core.Models;
+using Umbraco.Core.Persistence;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Dimi.Polyglot.DAL
 {
@@ -17,72 +22,18 @@ namespace Dimi.Polyglot.DAL
         /// <returns>The list of property types</returns>
         public static List<ContentTypePropertyInfo> GetPropertyList(int contentTypeId, List<ContentTypePropertyInfo> rowList = null)
         {
-            var onUmbraco6 = ConfigurationManager.AppSettings["umbracoConfigurationStatus"].StartsWith("6");
-
             if (rowList == null)
             {
                 rowList = new List<ContentTypePropertyInfo>();
             }
 
-            var h = umbraco.BusinessLogic.Application.SqlHelper;
+            var db = UmbracoDatabase.Get();
 
-            using (
-                var reader =
-                    h.ExecuteReader("SELECT * from [cmsPropertyType] WHERE contentTypeId = @contentTypeId",
-                                    h.CreateParameter("contentTypeId", contentTypeId)))
-            {
-                while (reader.Read())
-                {
-                    var s = new ContentTypePropertyInfo
-                                                    {
-                                                        Id = reader.GetInt("Id"),
-                                                        DataTypeId = reader.GetInt("DataTypeId"),
-                                                        ContentTypeId = reader.GetInt("ContentTypeId"),
-                                                        Alias = reader.GetString("Alias"),
-                                                        Name = reader.GetString("Name"),
-                                                        HelpText = reader.GetString("HelpText"),
-                                                        SortOrder = reader.GetInt("SortOrder"),
-                                                        Mandatory = reader.GetBoolean("Mandatory"),
-                                                        ValidationRegExp = reader.GetString("ValidationRegExp"),
-                                                        Description = reader.GetString("Description")
-                                                    };
-                    rowList.Add(s);
-                }
-            }
+            rowList.InsertRange(0, db.Query<ContentTypePropertyInfo>(new Sql().Select("*").From("cmsPropertyType").Where("contentTypeId = @0", contentTypeId)).ToList());
 
-            var masterContentTypeId = -1;
+            var masterContentTypeId = db.SingleOrDefault<int>(new Sql().Select("parentContentTypeId").From("cmsContentType2ContentType").Where("childContentTypeId = @0", contentTypeId));
 
-            if (!onUmbraco6)
-            {
-                using (
-                    var reader =
-                        h.ExecuteReader("SELECT masterContentType from [cmsContentType] WHERE nodeId = @contentTypeId",
-                                        h.CreateParameter("contentTypeId", contentTypeId)))
-                {
-                    if (reader.Read())
-                    {
-                        masterContentTypeId = reader.GetInt("masterContentType");
-
-                    }
-                }
-            }
-            else
-            {
-                using (
-                    var reader =
-                        h.ExecuteReader("SELECT parentContentTypeId from [cmsContentType2ContentType] WHERE childContentTypeId = @childContentTypeId",
-                                        h.CreateParameter("childContentTypeId", contentTypeId)))
-                {
-                    if (reader.Read())
-                    {
-                        masterContentTypeId = reader.GetInt("parentContentTypeId");
-
-                    }
-                }
-            }
-
-            return masterContentTypeId == -1 ? rowList : GetPropertyList(masterContentTypeId, rowList);
-
+            return masterContentTypeId == 0 ? rowList : GetPropertyList(masterContentTypeId, rowList);
         }
     }
 }

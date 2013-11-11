@@ -11,7 +11,7 @@ namespace Dimi.Polyglot.BLL
     /// </summary>
     public static class DocumentTranslation
     {
-        private const string TranslationFolderAliasSuffix = "_TranslationFolder";
+        private const string TranslationFolderAliasSuffix = "TranslationFolder";
         private const string TranslationFolderName = "Translations";
         private const string LanguagePropertyAlias = "language";
 
