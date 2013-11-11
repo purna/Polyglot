@@ -2,25 +2,49 @@
 using umbraco.BusinessLogic;
 using umbraco.BusinessLogic.Actions;
 using umbraco.cms.presentation.Trees;
+using Umbraco.Core;
 
 namespace Dimi.Polyglot.Web.Backoffice
 {
     /// <summary>
     /// Customises Umbraco content tree context menu, adding the Translation creation action
     /// </summary>
-    public class MenuCustomisation : ApplicationBase
+    //public class MenuCustomisation : ApplicationBase
+    //{
+    //    public MenuCustomisation()
+    //    {
+    //        BaseTree.BeforeNodeRender += BaseTree_BeforeNodeRender;
+    //    }
+
+    //    private void BaseTree_BeforeNodeRender(ref XmlTree sender, ref XmlTreeNode node, EventArgs e)
+    //    {
+    //        if (node.Menu == null || node.NodeType.ToLower() != "content") return;
+    //        node.Menu.Insert(3, new TranslationCreationAction());
+    //        node.Menu.Insert(3, ContextMenuSeperator.Instance);
+    //        node.Menu.Insert(5, ContextMenuSeperator.Instance);
+    //    }
+    //}
+
+    public class MenuCustomisation : ApplicationEventHandler
     {
-        public MenuCustomisation()
+        protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            BaseTree.BeforeNodeRender += BaseTree_BeforeNodeRender;
+            Umbraco.Web.Trees.ContentTreeController.MenuRendering += ContentTreeController_MenuRendering;
         }
 
-        private void BaseTree_BeforeNodeRender(ref XmlTree sender, ref XmlTreeNode node, EventArgs e)
+        void ContentTreeController_MenuRendering(Umbraco.Web.Trees.TreeControllerBase sender, Umbraco.Web.Trees.MenuRenderingEventArgs e)
         {
-            if (node.Menu == null || node.NodeType.ToLower() != "content") return;
-            node.Menu.Insert(3, new TranslationCreationAction());
-            node.Menu.Insert(3, ContextMenuSeperator.Instance);
-            node.Menu.Insert(5, ContextMenuSeperator.Instance);
+            //creates a menu action that will open /umbraco/currentSection/itemAlias.html
+            var i = new Umbraco.Web.Models.Trees.MenuItem("polyglotCreateTranslations", "Create translations");
+
+            //optional, if you want to load a legacy page, otherwise it will just follow convention
+            i.AdditionalData.Add("actionUrl", "/Umbraco/Plugins/Dimi.Polyglot/TranslationCreation.aspx");
+
+            //sets the icon to icon-wine-glass 
+            i.Icon = "polyglot";
+
+            //insert at index 5
+            e.Menu.Items.Insert(5, i);
         }
     }
 }
