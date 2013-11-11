@@ -44,6 +44,8 @@ _ReSharper*/
 #Project files
 [Bb]uild/
 [Pp]ackage/
+[Pp]ackageRazor/
+[Pp]ackageXslt/
 
 #Subversion files
 .svn
