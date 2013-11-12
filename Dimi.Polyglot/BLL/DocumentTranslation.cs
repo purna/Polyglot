@@ -27,26 +27,22 @@ namespace Dimi.Polyglot.BLL
         /// </summary>
         /// <param name="nodeID">The id of the node</param>
         /// <returns>The document type of the translation folder, if it exists; otherwise null</returns>
-        public static Umbraco.Core.Models.IContentType GetTranslationFolderContentType(int nodeID)
+        public static Umbraco.Core.Models.ContentType GetTranslationFolderContentType(int nodeID)
         {
-            Umbraco.Core.Models.IContentType folderContentType = null;
-
-            var nodeDoc = new Document(nodeID);
+            Umbraco.Core.Models.ContentType folderContentType = null;
+            var cs = ApplicationContext.Current.Services.ContentService;
+            var nodeDoc = cs.GetById(nodeID);
 
             var cts = ApplicationContext.Current.Services.ContentTypeService;
 
-            var nodeDocContentType = new DocumentType(nodeDoc.ContentType.Id);
-
             foreach (
                 var contentType in
-                    nodeDoc.ContentType.AllowedChildContentTypeIDs.Select(
-                        contentTypeId => cts.GetContentType(contentTypeId)).Where(
-                            childContentType => childContentType.Alias == nodeDocContentType.Alias + TranslationFolderAliasSuffix)
+                    nodeDoc.ContentType.AllowedContentTypes.Where(
+                            childContentType => childContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix)
                 )
             {
-                folderContentType = contentType;
+                folderContentType = (Umbraco.Core.Models.ContentType)ApplicationContext.Current.Services.ContentTypeService.GetContentType(contentType.Alias);
             }
-
             return folderContentType;
         }
 
@@ -57,8 +53,8 @@ namespace Dimi.Polyglot.BLL
         /// <returns>The translation folder, if it exists; otherwise null</returns>
         public static IContent TranslationFolderGet(int nodeID)
         {
-            var nodeDoc = new Umbraco.Core.Services.ContentService().GetById(nodeID);
-            return new Umbraco.Core.Services.ContentService().GetChildren(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
+            var nodeDoc = ApplicationContext.Current.Services.ContentService.GetById(nodeID);
+            return ApplicationContext.Current.Services.ContentService.GetChildren(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
         }
 
         /// <summary>
@@ -90,13 +86,14 @@ namespace Dimi.Polyglot.BLL
         /// <returns>True if the creation of the translation folder succeeds; otherwise false</returns>
         public static bool TranslationFolderCreate(int nodeID)
         {
-            var nodeDoc = new Document(nodeID);
+            var nodeDoc = ApplicationContext.Current.Services.ContentService.GetById(nodeID);
             var contentType = GetTranslationFolderContentType(nodeID);
             if (contentType == null)
                 return false;
             else
             {
-                var folder = new ContentService().CreateContent(TranslationFolderName, nodeDoc.Id, contentType.Alias, User.GetCurrent().Id);
+
+                var folder = ApplicationContext.Current.Services.ContentService.CreateContent(TranslationFolderName, nodeDoc.Id, contentType.Alias, User.GetCurrent().Id);
 
                 var folderProperties = ContentType.GetPropertyList(contentType.Id);
 
@@ -139,19 +136,18 @@ namespace Dimi.Polyglot.BLL
             var translationFolder = TranslationFolderGet(nodeID);
             if (translationFolder != null)
             {
-                var translationFolderContentType = new DocumentType(translationFolder.ContentType.Id);
-                var translationNodeContentTypeId = translationFolderContentType.AllowedChildContentTypeIDs[0];
-                var langNode = Document.MakeNew(languageISOCode, new DocumentType(translationNodeContentTypeId),
-                                                     User.GetCurrent(), translationFolder.Id);
-                var node = new Document(nodeID);
+                var translationFolderContentType = ApplicationContext.Current.Services.ContentTypeService.GetContentType(translationFolder.ContentType.Id);
+                var translationNodeContentTypeId = translationFolderContentType.AllowedContentTypes.First().Id.Value;
+                var langNode = ApplicationContext.Current.Services.ContentService.CreateContent(languageISOCode, translationFolder, translationFolderContentType.Alias, User.GetCurrent().Id);
+                var node = ApplicationContext.Current.Services.ContentService.GetById(nodeID);
                 try
                 {
-                    langNode.getProperty(LanguagePropertyAlias).Value = languageISOCode;
-                    langNode.Save();
+                    langNode.Properties.Single(x => x.Alias == LanguagePropertyAlias).Value = languageISOCode;
+                    ApplicationContext.Current.Services.ContentService.Save(langNode, User.GetCurrent().Id);
                 }
                 catch
                 {
-                    langNode.delete(true);
+                    ApplicationContext.Current.Services.ContentService.Delete(langNode);
                     throw new Exception("NoLangProp");
                 }
                 var langNodeProperties =
@@ -160,10 +156,10 @@ namespace Dimi.Polyglot.BLL
                 {
                     if (property.Alias != LanguagePropertyAlias &&
                         property.Alias != GetHideFromNavigationPropertyAlias())
-                        langNode.getProperty(property.Alias).Value = node.getProperty(property.Alias).Value;
+                        langNode.Properties.Single(x => x.Alias == property.Alias).Value = node.Properties.Single(x => x.Alias == property.Alias).Value;
                     if (property.Alias == GetHideFromNavigationPropertyAlias())
-                        langNode.getProperty(property.Alias).Value = true;
-                    langNode.Save();
+                        langNode.Properties.Single(x => x.Alias == property.Alias).Value = true;
+                    ApplicationContext.Current.Services.ContentService.Save(langNode);
                 }
 
                 return true;
@@ -200,7 +196,7 @@ namespace Dimi.Polyglot.BLL
         public static string CheckTranslationInfrastructure(int nodeID)
         {
             var status = "ok";
-            var nodeDoc = new Document(nodeID);
+            var nodeDoc = ApplicationContext.Current.Services.ContentService.GetById(nodeID);
             var cts = ApplicationContext.Current.Services.ContentTypeService;
 
             try
@@ -236,7 +232,7 @@ namespace Dimi.Polyglot.BLL
                             "Translation document type contains properties that do not exist in the document type (apart from language and navigation hiding)");
                 }
                 else
-                    throw new Exception("TranslationFolder document type " + new Document(nodeID).ContentType.Alias +
+                    throw new Exception("TranslationFolder document type " + ApplicationContext.Current.Services.ContentService.GetById(nodeID).ContentType.Alias +
                                         TranslationFolderAliasSuffix +
                                         " does not exist, or it does not have the right alias or is not an allowed child nodetype");
             }

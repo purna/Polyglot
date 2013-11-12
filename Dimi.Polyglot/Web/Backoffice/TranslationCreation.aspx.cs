@@ -10,6 +10,8 @@ using Zeta.EnterpriseLibrary.Web;
 using umbraco.cms.businesslogic.web;
 using Umbraco.Web.UI.Pages;
 using Umbraco.Web.UI;
+using Umbraco.Core.Services;
+using Umbraco.Core;
 
 namespace Dimi.Polyglot.Web.Backoffice
 {
@@ -25,8 +27,9 @@ namespace Dimi.Polyglot.Web.Backoffice
         {
             _queryString = new QueryString(Page);
             _nodeId = _queryString["NodeID"].ToInt();
-            var currentDocument = new Document(_nodeId);
-            DocumentDescription.Text = currentDocument.Text;
+
+            var currentDocument = ApplicationContext.Current.Services.ContentService.GetById(_nodeId);
+            DocumentDescription.Text = currentDocument.Name;
 
             var status = DocumentTranslation.CheckTranslationInfrastructure(_nodeId);
             if (status == "ok")
