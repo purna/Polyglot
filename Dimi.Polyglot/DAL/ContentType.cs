@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Configuration;
 using Dimi.Polyglot.Model;
-using Umbraco.Core;
-using Umbraco.Core.Models;
 using Umbraco.Core.Persistence;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Dimi.Polyglot.DAL
 {

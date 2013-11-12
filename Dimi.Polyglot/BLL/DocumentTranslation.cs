@@ -55,10 +55,10 @@ namespace Dimi.Polyglot.BLL
         /// </summary>
         /// <param name="nodeID">The id of the node</param>
         /// <returns>The translation folder, if it exists; otherwise null</returns>
-        public static Document TranslationFolderGet(int nodeID)
+        public static IContent TranslationFolderGet(int nodeID)
         {
-            var nodeDoc = new Document(nodeID);
-            return (Document)new Umbraco.Core.Services.ContentService().GetChildren(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
+            var nodeDoc = new Umbraco.Core.Services.ContentService().GetById(nodeID);
+            return new Umbraco.Core.Services.ContentService().GetChildren(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
         }
 
         /// <summary>
@@ -70,8 +70,7 @@ namespace Dimi.Polyglot.BLL
         public static bool TranslationNodeExists(int nodeID, string languageISOCode)
         {
             var languagesFolder = TranslationFolderGet(nodeID);
-
-            return languagesFolder != null && languagesFolder.Children.Any(langDoc => langDoc.Text.ToLower() == languageISOCode.ToLower());
+            return languagesFolder != null && languagesFolder.Children().Any(langDoc => langDoc.Name.ToLower() == languageISOCode.ToLower());
         }
 
         /// <summary>
@@ -181,13 +180,13 @@ namespace Dimi.Polyglot.BLL
         {
             var translationFolder = TranslationFolderGet(nodeID);
             if (translationFolder == null) return;
-            foreach (var translationNode in translationFolder.Children)
+            foreach (var translationNode in translationFolder.Children())
             {
                 foreach (var lang in Languages.GetLanguages(true))
                 {
                     if (lang.ISOCode.ToLower() ==
-                        translationNode.getProperty(LanguagePropertyAlias).Value.ToString().ToLower())
-                        translationNode.sortOrder = lang.Sequence;
+                        translationNode.Properties.Single(x => x.Alias == LanguagePropertyAlias).Value.ToString().ToLower())
+                        translationNode.SortOrder = lang.Sequence;
                 }
             }
         }
