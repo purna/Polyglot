@@ -3,6 +3,9 @@ using System.Configuration;
 using System.Linq;
 using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic.web;
+using Umbraco.Core;
+using Umbraco.Core.Models;
+using Umbraco.Core.Services;
 
 namespace Dimi.Polyglot.BLL
 {
@@ -24,18 +27,21 @@ namespace Dimi.Polyglot.BLL
         /// </summary>
         /// <param name="nodeID">The id of the node</param>
         /// <returns>The document type of the translation folder, if it exists; otherwise null</returns>
-        public static DocumentType GetTranslationFolderContentType(int nodeID)
+        public static Umbraco.Core.Models.IContentType GetTranslationFolderContentType(int nodeID)
         {
-            DocumentType folderContentType = null;
+            Umbraco.Core.Models.IContentType folderContentType = null;
 
             var nodeDoc = new Document(nodeID);
 
+            var cts = ApplicationContext.Current.Services.ContentTypeService;
+
             var nodeDocContentType = new DocumentType(nodeDoc.ContentType.Id);
+
             foreach (
                 var contentType in
-                    nodeDocContentType.AllowedChildContentTypeIDs.Select(
-                        contentTypeId => new DocumentType(contentTypeId)).Where(
-                            contentType => contentType.Alias == nodeDocContentType.Alias + TranslationFolderAliasSuffix)
+                    nodeDoc.ContentType.AllowedChildContentTypeIDs.Select(
+                        contentTypeId => cts.GetContentType(contentTypeId)).Where(
+                            childContentType => childContentType.Alias == nodeDocContentType.Alias + TranslationFolderAliasSuffix)
                 )
             {
                 folderContentType = contentType;
@@ -52,8 +58,7 @@ namespace Dimi.Polyglot.BLL
         public static Document TranslationFolderGet(int nodeID)
         {
             var nodeDoc = new Document(nodeID);
-
-            return Document.GetChildrenForTree(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
+            return (Document)new Umbraco.Core.Services.ContentService().GetChildren(nodeID).FirstOrDefault(doc => doc.ContentType.Alias == nodeDoc.ContentType.Alias + TranslationFolderAliasSuffix);
         }
 
         /// <summary>
@@ -92,13 +97,15 @@ namespace Dimi.Polyglot.BLL
                 return false;
             else
             {
-                var folder = Document.MakeNew(TranslationFolderName, contentType, User.GetCurrent(), nodeDoc.Id);
+                var folder = new ContentService().CreateContent(TranslationFolderName, nodeDoc.Id, contentType.Alias, User.GetCurrent().Id);
 
                 var folderProperties = ContentType.GetPropertyList(contentType.Id);
 
                 if (
                     (from prop in folderProperties where prop.Alias == GetHideFromNavigationPropertyAlias() select prop).Any())
-                    folder.getProperty(GetHideFromNavigationPropertyAlias()).Value = true;
+                {
+                    folder.Properties.Single(x => x.Alias == GetHideFromNavigationPropertyAlias()).Value = true;
+                }
 
                 return true;
             }
@@ -195,30 +202,32 @@ namespace Dimi.Polyglot.BLL
         {
             var status = "ok";
             var nodeDoc = new Document(nodeID);
+            var cts = ApplicationContext.Current.Services.ContentTypeService;
 
             try
             {
                 var translationFolderContentType = GetTranslationFolderContentType(nodeID);
                 if (translationFolderContentType != null)
                 {
-                    if (!translationFolderContentType.AllowedChildContentTypeIDs.Any())
+                    if (!translationFolderContentType.AllowedContentTypes.Any())
                         throw new Exception(
                             "Translation document type does not exist, or it is not an allowed child nodetype of the translation folder document type.");
 
-                    if (translationFolderContentType.AllowedChildContentTypeIDs.Count() > 1)
+                    if (translationFolderContentType.AllowedContentTypes.Count() > 1)
                         throw new Exception(
                             "Translation folder document type has more than one allowed child nodetypes. It should only have one.");
 
-                    var translationContentType =
-                        new DocumentType(translationFolderContentType.AllowedChildContentTypeIDs[0]);
+                    var translationContentType = translationFolderContentType.AllowedContentTypes.First();
 
-                    if (!(from prop in translationContentType.PropertyTypes
+                    var translationContentTypeInstance = cts.GetContentType(translationContentType.Id.Value);
+
+                    if (!(from prop in translationContentTypeInstance.PropertyTypes
                           where prop.Alias == LanguagePropertyAlias
                           select prop).Any())
                         throw new Exception("Translation document type does not contain the '" + LanguagePropertyAlias +
                                             "' (alias) property");
 
-                    if ((from p in ContentType.GetPropertyList(translationContentType.Id)
+                    if ((from p in translationContentTypeInstance.PropertyTypes
                          where
                              !(from pr in ContentType.GetPropertyList(nodeDoc.ContentType.Id) select pr.Alias).Contains(
                                  p.Alias)
