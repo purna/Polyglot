@@ -140,7 +140,7 @@ The main advantage of using this package, assuming that it is desired, is consis
       <refreshRate>0</refreshRate>
       <scriptingFile>PropertyTranslation.cshtml</scriptingFile>
       <properties>
-        <property name="Property" alias="Property" show="False" propertyType="text" />
+        <property name="Property" alias="Property" propertyType="Umbraco.Textbox" />
       </properties>
     </macro>
     <macro>
@@ -170,11 +170,11 @@ The main advantage of using this package, assuming that it is desired, is consis
       <refreshRate>0</refreshRate>
       <scriptingFile>TranslatedNavigation.cshtml</scriptingFile>
       <properties>
-        <property name="UlCssId" alias="UlCssId" show="False" propertyType="text" />
-        <property name="Level" alias="Level" show="False" propertyType="number" />
-        <property name="NaviHideProperty" alias="NaviHideProperty" show="False" propertyType="text" />
-        <property name="CurrentItemCssClass" alias="CurrentItemCssClass" show="False" propertyType="text" />
-        <property name="TitlePropertyAlias" alias="TitlePropertyAlias" show="False" propertyType="text" />
+        <property name="UlCssId" alias="UlCssId" propertyType="Umbraco.Textbox" />
+        <property name="Level" alias="Level" propertyType="Umbraco.Integer" />
+        <property name="NaviHideProperty" alias="NaviHideProperty" propertyType="Umbraco.Textbox" />
+        <property name="CurrentItemCssClass" alias="CurrentItemCssClass" propertyType="Umbraco.Textbox" />
+        <property name="TitlePropertyAlias" alias="TitlePropertyAlias" propertyType="Umbraco.Textbox" />
       </properties>
     </macro>
     <macro>

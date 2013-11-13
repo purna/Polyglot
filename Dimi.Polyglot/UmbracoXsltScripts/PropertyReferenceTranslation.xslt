@@ -19,15 +19,15 @@
       <xsl:variable name="currentPageTypeAlias" select="name($currentPage)" />
       <xsl:choose>
         <xsl:when
-            test="$currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
-                    *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
+            test="$currentPage/*[name() = concat($currentPageTypeAlias, 'TranslationFolder')]/
+                    *[name() = concat($currentPageTypeAlias, 'Translation') and language = $langISO]/
                       * [name() = $Property and not(@isDoc)] != '' and
-                  string-length($currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
-                    *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
+                  string-length($currentPage/*[name() = concat($currentPageTypeAlias, 'TranslationFolder')]/
+                    *[name() = concat($currentPageTypeAlias, 'Translation') and language = $langISO]/
                       * [name() = $Property and not(@isDoc)]) != 0">
             <xsl:value-of disable-output-escaping="yes"
-                        select="$currentPage/*[name() = concat($currentPageTypeAlias, '_TranslationFolder')]/
-                          *[name() = concat($currentPageTypeAlias, '_Translation') and language = $langISO]/
+                        select="$currentPage/*[name() = concat($currentPageTypeAlias, 'TranslationFolder')]/
+                          *[name() = concat($currentPageTypeAlias, 'Translation') and language = $langISO]/
                             * [name() = $Property and not(@isDoc)]" />
         </xsl:when>
         <xsl:otherwise>

@@ -157,18 +157,11 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UmbracoRazorScripts\Umbraco470LegacyScriptsPatch\PropertyTranslation.cshtml" />
     <Content Include="UmbracoRazorScripts\SelectedLanguage.cshtml" />
     <Content Include="UmbracoRazorScripts\TranslatedNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UmbracoRazorScripts\Umbraco470LegacyScriptsPatch\TranslationRedirect.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="UmbracoRazorScripts\SetPageCulture.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="UmbracoRazorScripts\Umbraco470LegacyScriptsPatch\PropertyReferenceTranslation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UmbracoRazorScripts\PropertyReferenceTranslation.cshtml" />
