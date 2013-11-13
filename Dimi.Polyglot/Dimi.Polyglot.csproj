@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Dimi.Polyglot.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +44,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Dimi.Polyglot.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
@@ -131,7 +133,6 @@
     <Compile Include="Web\Backoffice\TranslationCreation.aspx.designer.cs">
       <DependentUpon>TranslationCreation.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Web\Backoffice\TranslationCreationAction.cs" />
     <Compile Include="Web\Frontoffice\LanguageSelector.ascx.cs">
       <DependentUpon>LanguageSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
