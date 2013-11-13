@@ -12,6 +12,7 @@ using Umbraco.Web.UI.Pages;
 using Umbraco.Web.UI;
 using Umbraco.Core.Services;
 using Umbraco.Core;
+using Umbraco.Core.Logging;
 
 namespace Dimi.Polyglot.Web.Backoffice
 {
@@ -155,6 +156,7 @@ namespace Dimi.Polyglot.Web.Backoffice
                 }
                 catch (Exception ex)
                 {
+                    LogHelper.Error(this.GetType(), ex.Message, ex);
                     saved = ex.Message == "NoLangProp" ? "NoLangProp" : "failed";
                 }
 

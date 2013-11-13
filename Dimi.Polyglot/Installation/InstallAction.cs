@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using umbraco.cms.businesslogic.packager.standardPackageActions;
 using umbraco.interfaces;
+using Umbraco.Core.Logging;
 
 namespace Dimi.Polyglot.Installation
 {
@@ -36,8 +37,9 @@ namespace Dimi.Polyglot.Installation
                     actions.Add(translation);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(typeof(InstallAction), ex.Message, ex);
                 success = false;
             }
 
@@ -47,8 +49,9 @@ namespace Dimi.Polyglot.Installation
                 {
                     translationsFile.Save(translationsFilePath, SaveOptions.DisableFormatting);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    LogHelper.Error(typeof(InstallAction), ex.Message, ex);
                     success = false;
                 }
             }
@@ -69,8 +72,9 @@ namespace Dimi.Polyglot.Installation
                     actions.XPathSelectElements(XPathQueryXmlCreateTranslationsKey).Single().Remove();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(typeof(InstallAction), ex.Message, ex);
                 success = false;
             }
 
@@ -80,8 +84,9 @@ namespace Dimi.Polyglot.Installation
                 {
                     translationsFile.Save(translationsFilePath, SaveOptions.DisableFormatting);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    LogHelper.Error(typeof(InstallAction), ex.Message, ex);
                     success = false;
                 }
             }
