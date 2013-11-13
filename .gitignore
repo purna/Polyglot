@@ -46,6 +46,8 @@ _ReSharper*/
 [Pp]ackage/
 [Pp]ackageRazor/
 [Pp]ackageXslt/
+Dimi.Polyglot/BuildRazor/
+Dimi.Polyglot/BuildXslt/
 
 #Subversion files
 .svn
