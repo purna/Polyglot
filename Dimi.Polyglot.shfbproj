@@ -16,15 +16,15 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
-    <HtmlHelpName>Dimi.Polyglot_API_1_6</HtmlHelpName>
+    <HtmlHelpName>Dimi.Polyglot_API_2_0</HtmlHelpName>
     <Language>en-US</Language>
     <HelpTitle>Polyglot Package API</HelpTitle>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>Website</HelpFileFormat>
     <DocumentationSources>
       <DocumentationSource sourceFile="Dimi.Polyglot\bin\Dimi.Polyglot.dll" xmlns="" />
       <DocumentationSource sourceFile="Dimi.Polyglot\bin\Dimi.Polyglot.xml" xmlns="" />
     </DocumentationSources>
-    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Dimi.Polyglot.Web.Frontoffice" isDocumented="True" xmlns="" />
       <NamespaceSummaryItem name="Zeta.EnterpriseLibrary.Web" isDocumented="False" xmlns="" />
@@ -33,10 +33,16 @@
     <SyntaxFilters>CSharp</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>VS2005</PresentationStyle>
+    <PresentationStyle>VS2010</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

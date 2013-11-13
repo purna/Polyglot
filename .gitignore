@@ -69,3 +69,7 @@ packages/
 #Umbraco Libraries
 UmbracoBinaries/
 
+#Help File Builder
+[Hh]elp/
+*.shfbproj_me
+
