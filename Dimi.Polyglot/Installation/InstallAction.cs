@@ -33,7 +33,7 @@ namespace Dimi.Polyglot.Installation
                 if (!actions.XPathSelectElements(XPathQueryXmlCreateTranslationsKey).Any())
                 {
                     var translation = new XElement("key", new XAttribute("alias", "polyglotCreateTranslations"));
-                    translation.SetValue("Create translations");
+                    translation.SetValue("[Polyglot] Create translations");
                     actions.Add(translation);
                 }
             }

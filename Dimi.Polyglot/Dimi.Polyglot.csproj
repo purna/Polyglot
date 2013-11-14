@@ -95,19 +95,6 @@
   <ItemGroup>
     <Content Include="PackageRazor.build.xml" />
     <Content Include="PackageBuildRazor\package.xml" />
-    <Content Include="PackageBuildXslt\package.xml" />
-    <Content Include="PackageXslt.build.xml" />
-    <Content Include="UmbracoXsltScripts\LanguageParameter.xslt">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="UmbracoXsltScripts\PropertyReferenceTranslation.xslt">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="UmbracoXsltScripts\PropertyTranslation.xslt" />
-    <Content Include="UmbracoXsltScripts\SelectedLanguage.xslt" />
-    <Content Include="UmbracoXsltScripts\SetPageCulture.xslt" />
-    <Content Include="UmbracoXsltScripts\TranslatedNavigation.xslt" />
-    <Content Include="UmbracoXsltScripts\TranslationRedirect.xslt" />
     <Content Include="Web\Backoffice\TranslationCreation.aspx" />
     <Content Include="Web\Frontoffice\LanguageSelector.ascx" />
     <Content Include="Web\Frontoffice\LanguageSelectorForWebForm.ascx" />
@@ -151,7 +138,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\QueryString.cs" />
-    <Compile Include="XSLTExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
