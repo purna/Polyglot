@@ -1,6 +1,6 @@
 ﻿@*
-  PropertyTranslation.cshtml
-  Part of the Polyglot package.
+    PropertyTranslation.cshtml
+    Part of the Polyglot package.
 *@
 @inherits umbraco.MacroEngines.DynamicNodeContext
 @using umbraco.MacroEngines;
@@ -8,7 +8,7 @@
 
     string selectedLanguage = RenderPage("SelectedLanguage.cshtml").ToString().Trim();
     string selectedLanguageNoDash = selectedLanguage.Replace("-", string.Empty);
-    
+
     DynamicNode page = Model;
 
     var contentFound = false;
@@ -16,7 +16,7 @@
     if (page.HasProperty(Parameter.Property + selectedLanguageNoDash) && !string.IsNullOrEmpty(page.GetPropertyValue(Parameter.Property + selectedLanguageNoDash)))
     {
         contentFound = true;
-        @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(umbraco.library.RenderMacroContent(page.GetPropertyValue(Parameter.Property + selectedLanguageNoDash).ToString(), page.Id)))
+        @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(Parameter.Property + selectedLanguageNoDash).ToString()))
     }
 
     if (!contentFound)
@@ -34,7 +34,7 @@
                         if (translation.HasProperty(Parameter.Property) && !string.IsNullOrEmpty(translation.GetPropertyValue(Parameter.Property)))
                         {
                             contentFound = true;
-                            @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(umbraco.library.RenderMacroContent(translation.GetPropertyValue(Parameter.Property), translation.Id)))
+                            @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(translation.GetPropertyValue(Parameter.Property)))
                         }
                     }
                 }
@@ -47,7 +47,7 @@
 
         if (page.HasProperty(Parameter.Property) && !string.IsNullOrEmpty((page.GetPropertyValue(Parameter.Property).ToString())))
         {
-            @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(Parameter.Property).ToString(), page.Id))
+            @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(Parameter.Property).ToString()))
         }
     }
 }
