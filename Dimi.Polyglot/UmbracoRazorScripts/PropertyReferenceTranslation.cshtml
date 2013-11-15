@@ -8,15 +8,15 @@
     int nodeID = PageData[0];
     string property = PageData[1];
     string selectedLanguage = PageData[2];
+    string selectedLanguageNoDash = selectedLanguage.Replace("-", string.Empty);
 
     DynamicNode page = new DynamicNode(nodeID);
 
     var value = string.Empty;
 
-    var prop = page.GetPropertyValue(property + "_" + selectedLanguage);
-    if (prop != null)
+    if (page.HasProperty(property + selectedLanguageNoDash) && !string.IsNullOrEmpty(page.GetPropertyValue(property + selectedLanguageNoDash)))
     {
-        value = prop;
+        value = Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(property + selectedLanguageNoDash).ToString(), page.Id);
     }
 
     if (string.IsNullOrEmpty(value))
@@ -49,7 +49,7 @@
 
     if (string.IsNullOrEmpty(value))
     {
-        prop = page.GetPropertyValue(property);
+        var prop = page.GetPropertyValue(property);
         if (prop != null)
         {
             value = prop;
