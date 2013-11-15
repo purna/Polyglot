@@ -1,6 +1,6 @@
 ﻿@*
-  PropertyTranslation.cshtml
-  Part of the Polyglot package.
+    PropertyTranslation.cshtml
+    Part of the Polyglot package.
 *@
 @inherits umbraco.MacroEngines.DynamicNodeContext
 @using umbraco.MacroEngines;
@@ -16,7 +16,7 @@
 
     if (page.HasProperty(property + selectedLanguageNoDash) && !string.IsNullOrEmpty(page.GetPropertyValue(property + selectedLanguageNoDash)))
     {
-        value = Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(property + selectedLanguageNoDash).ToString(), page.Id);
+        value = Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(property + selectedLanguageNoDash).ToString());
     }
 
     if (string.IsNullOrEmpty(value))
@@ -27,7 +27,7 @@
             {
                 foreach (DynamicNode translation in child.GetChildrenAsList)
                 {
-                    prop = translation.GetPropertyValue("language");
+                    var prop = translation.GetPropertyValue("language");
 
                     if (prop != null && prop.ToString().ToLower() == selectedLanguage.ToLower())
                     {
