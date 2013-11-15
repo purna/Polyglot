@@ -49,9 +49,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="businesslogic">
-      <HintPath>..\UmbracoBinaries\businesslogic.dll</HintPath>
-    </Reference>
     <Reference Include="cms">
       <HintPath>..\UmbracoBinaries\cms.dll</HintPath>
     </Reference>
@@ -87,9 +84,6 @@
     <Reference Include="Umbraco.Core, Version=1.0.5057.26287, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\UmbracoBinaries\Umbraco.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="umbraco.DataLayer">
-      <HintPath>..\UmbracoBinaries\umbraco.DataLayer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

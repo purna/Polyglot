@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
-using umbraco.BusinessLogic;
-using umbraco.cms.businesslogic.web;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
 using Umbraco.Core.Models;
-using Umbraco.Core.Services;
 
 namespace Dimi.Polyglot.BLL
 {
@@ -128,7 +125,7 @@ namespace Dimi.Polyglot.BLL
                 else
                 {
 
-                    var folder = ApplicationContext.Current.Services.ContentService.CreateContent(TranslationFolderName, nodeDoc.Id, contentType.Alias, User.GetCurrent().Id);
+                    var folder = ApplicationContext.Current.Services.ContentService.CreateContent(TranslationFolderName, nodeDoc.Id, contentType.Alias);
 
                     var folderProperties = ContentType.GetPropertyList(contentType.Id);
 
