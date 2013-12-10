@@ -65,7 +65,7 @@
   <info>
     <package>
       <name>Polyglot</name>
-      <version>2.00RC</version>
+      <version>2.00</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
       <url>http://our.umbraco.org/projects/backoffice-extensions/polyglot</url>
       <requirements>
@@ -76,7 +76,7 @@
     </package>
     <author>
       <name>Dimitrios Kourkoulis</name>
-      <website>http://dimitros.net</website>
+      <website>http://dimitros.be/en/tag/umbraco/</website>
     </author>
     <readme><![CDATA[This package adds an option to the context menu of the content tree, which allows the automatic creation of translations of a page, placed in a “folder” under that page. A drop down list box, which is also included in the package, can then be used on the front end by visitors to the site to select their preferred language. When a language is selected, the content is retrieved from one of the above-mentioned translations. If the corresponding translation does not exist, or a specific property of a page has not yet been translated, the content is retrieved from the initial page, which contains the default language.
 
