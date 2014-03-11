@@ -45,7 +45,7 @@
     if (!contentFound)
     {
 
-        if (page.HasProperty(Parameter.Property) && !string.IsNullOrEmpty((page.GetPropertyValue(Parameter.Property).ToString())))
+        if (page.HasProperty(Parameter.Property) && !string.IsNullOrEmpty(page.GetPropertyValue(Parameter.Property)))
         {
             @Html.Raw(Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(Parameter.Property).ToString()))
         }
