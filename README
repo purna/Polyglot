@@ -1,0 +1,20 @@
+--------------------------------------------
+Polyglot package for Umbraco
+
+by Dimitrios Kourkoulis
+--------------------------------------------
+
+
+
+http://our.umbraco.org/projects/backoffice-extensions/polyglot
+
+
+
+
+Tip for developers
+------------------------
+
+You're going to have some missing references because I do not redistribute the
+Umbraco libraries the project is referring to. To solve that, create a folder
+called UmbracoBinaries inside the cloned solution folder and copy the dlls 
+from an Umbraco instance there. 
