@@ -71,6 +71,9 @@ packages/
 #Umbraco Libraries
 UmbracoBinaries/
 
+#Ignore changes to the Umbraco test site folder
+UmbracoTestSite/
+
 #Help File Builder
 [Hh]elp/
 *.shfbproj_me
