@@ -1,0 +1,1 @@
+﻿Copy an Umbraco web site folder here for testing.
