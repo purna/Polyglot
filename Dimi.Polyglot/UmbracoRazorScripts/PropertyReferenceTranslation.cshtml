@@ -5,9 +5,26 @@
 @inherits umbraco.MacroEngines.DynamicNodeContext
 @using umbraco.MacroEngines;
 @{
-    int nodeID = PageData[0];
-    string property = PageData[1];
-    string selectedLanguage = PageData[2];
+    int nodeID;
+    string property, selectedLanguage;
+
+    if (PageData.Keys.Count > 0)
+    {
+        nodeID = PageData[0];
+        property = PageData[1];
+        selectedLanguage = PageData[2];
+    }
+    else
+    {
+        nodeID = int.Parse(Parameter.nodeID);
+        property = Parameter.property;
+        selectedLanguage = Parameter.language;
+    }
+
+    if (selectedLanguage == null || selectedLanguage.Length == 0)
+    {
+        selectedLanguage = RenderPage("SelectedLanguage.cshtml").ToString().Trim();
+    }
     string selectedLanguageNoDash = selectedLanguage.Replace("-", string.Empty);
 
     DynamicNode page = new DynamicNode(nodeID);
