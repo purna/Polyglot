@@ -6,7 +6,7 @@
 @using umbraco.MacroEngines;
 @{
     int nodeID;
-    string property, selectedLanguage;
+    string property, selectedLanguage = string.Empty;
 
     if (PageData.Keys.Count > 0)
     {
@@ -16,9 +16,8 @@
     }
     else
     {
-        nodeID = int.Parse(Parameter.nodeID);
-        property = Parameter.property;
-        selectedLanguage = Parameter.language;
+        nodeID = int.Parse(Parameter.NodeID);
+        property = Parameter.Property;
     }
 
     if (selectedLanguage == null || selectedLanguage.Length == 0)

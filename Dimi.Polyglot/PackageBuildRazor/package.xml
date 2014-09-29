@@ -65,7 +65,7 @@
   <info>
     <package>
       <name>Polyglot</name>
-      <version>2.02</version>
+      <version>2.03</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
       <url>http://our.umbraco.org/projects/backoffice-extensions/polyglot</url>
       <requirements>
@@ -140,6 +140,23 @@ The main advantage of using this package, assuming that it is desired, is consis
       <refreshRate>0</refreshRate>
       <scriptingFile>PropertyTranslation.cshtml</scriptingFile>
       <properties>
+        <property name="Property" alias="Property" propertyType="Umbraco.Textbox" />
+      </properties>
+    </macro>
+    <macro>
+      <name>Property Reference Translation</name>
+      <alias>PropertyReferenceTranslation</alias>
+      <scriptType>
+      </scriptType>
+      <scriptAssembly>
+      </scriptAssembly>
+      <xslt>
+      </xslt>
+      <useInEditor>False</useInEditor>
+      <refreshRate>0</refreshRate>
+      <scriptingFile>PropertyReferenceTranslation.cshtml</scriptingFile>
+      <properties>
+        <property name="NodeID" alias="NodeID" propertyType="Umbraco.Textbox" />
         <property name="Property" alias="Property" propertyType="Umbraco.Textbox" />
       </properties>
     </macro>
