@@ -32,7 +32,7 @@
 
     if (page.HasProperty(property + selectedLanguageNoDash) && !string.IsNullOrEmpty(page.GetPropertyValue(property + selectedLanguageNoDash)))
     {
-        value = Umbraco.Web.Templates.TemplateUtilities.ParseInternalLinks(page.GetPropertyValue(property + selectedLanguageNoDash).ToString());
+        value = library.RenderMacroContent(page.GetPropertyValue(property + selectedLanguageNoDash), page.Id);
     }
 
     if (string.IsNullOrEmpty(value))
@@ -47,7 +47,7 @@
 
                     if (prop != null && prop.ToString().ToLower() == selectedLanguage.ToLower())
                     {
-                        prop = translation.GetPropertyValue(property);
+                        prop = library.RenderMacroContent(translation.GetPropertyValue(property), translation.Id);
                     }
                     else
                     {
