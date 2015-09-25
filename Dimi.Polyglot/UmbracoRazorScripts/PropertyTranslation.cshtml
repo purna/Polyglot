@@ -23,7 +23,7 @@
     {
         foreach (DynamicNode child in page.GetChildrenAsList)
         {
-            if (child.NodeTypeAlias == page.NodeTypeAlias + "TranslationFolder")
+            if (child.NodeTypeAlias == page.NodeTypeAlias + "_TranslationFolder")
             {
                 foreach (DynamicNode translation in child.GetChildrenAsList)
                 {
